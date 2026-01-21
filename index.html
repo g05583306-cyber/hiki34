@@ -3,57 +3,374 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
   <title>Обо мне — Тимур</title>
+
+  <!--
+    Обновлённая версия: анимированный фон, scrollspy меню, мягкие анимации, карточки работ,
+    кнопки копирования контактов, тост-уведомления, кнопка "вверх".
+  -->
+
   <style>
     :root{
-      --bg:#0b1020; --card:#111a33; --text:#e8ecff; --muted:#aab4e6;
-      --accent:#6aa9ff; --accent2:#7c5cff; --border:rgba(255,255,255,.10);
+      --bg:#0b1020;
+      --card:#111a33;
+      --text:#e8ecff;
+      --muted:#aab4e6;
+      --accent:#6aa9ff;
+      --accent2:#7c5cff;
+      --accent3:#31d3ff;
+      --border:rgba(255,255,255,.10);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 22px;
     }
+
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1200px 600px at 20% 0%, rgba(122,92,255,.25), transparent 60%),
-      radial-gradient(900px 600px at 80% 10%, rgba(106,169,255,.20), transparent 55%), var(--bg); color:var(--text);}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
     a{color:inherit}
+    img{max-width:100%; display:block}
+    ::selection{background: rgba(106,169,255,.28)}
+
+    /* ---------- Background (animated blobs + subtle grid) ---------- */
+    .bg{
+      position:fixed; inset:0; z-index:-3;
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(122,92,255,.25), transparent 60%),
+        radial-gradient(900px 600px at 80% 10%, rgba(106,169,255,.20), transparent 55%),
+        radial-gradient(1200px 900px at 50% 100%, rgba(49,211,255,.10), transparent 55%),
+        var(--bg);
+    }
+    .grid-overlay{
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: radial-gradient(800px 500px at 50% 0%, rgba(0,0,0,1), transparent 70%);
+      opacity:.45;
+    }
+    .blob{
+      position:fixed; width:520px; height:520px; z-index:-1; filter: blur(44px);
+      border-radius: 999px; opacity:.35;
+      background: radial-gradient(circle at 30% 30%, rgba(106,169,255,.9), transparent 55%),
+                  radial-gradient(circle at 70% 70%, rgba(124,92,255,.9), transparent 55%);
+      animation: floaty 14s ease-in-out infinite;
+      transform: translate3d(0,0,0);
+      pointer-events:none;
+    }
+    .blob.b2{
+      width:620px;height:620px; opacity:.25;
+      background: radial-gradient(circle at 30% 30%, rgba(49,211,255,.9), transparent 55%),
+                  radial-gradient(circle at 70% 70%, rgba(124,92,255,.9), transparent 55%);
+      animation-duration: 18s;
+    }
+    .blob.b1{left:-140px; top:-160px}
+    .blob.b2{right:-220px; top:120px}
+
+    @keyframes floaty{
+      0%{transform: translate(-8px,-12px) scale(1)}
+      50%{transform: translate(10px,14px) scale(1.03)}
+      100%{transform: translate(-8px,-12px) scale(1)}
+    }
+
+    /* Canvas particles */
+    #fx{
+      position:fixed; inset:0; z-index:-2;
+      pointer-events:none;
+      opacity:.75;
+    }
+
+    /* ---------- Layout ---------- */
     .wrap{max-width:980px;margin:0 auto;padding:24px}
-    header{position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(11,16,32,.55);border-bottom:1px solid var(--border);z-index:10}
-    nav{display:flex;gap:14px;align-items:center;justify-content:space-between}
+    header{
+      position:sticky;top:0;z-index:10;
+      backdrop-filter: blur(12px);
+      background: rgba(11,16,32,.60);
+      border-bottom: 1px solid var(--border);
+    }
+    nav{
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+    }
     .brand{display:flex;gap:10px;align-items:center;text-decoration:none}
-    .dot{width:10px;height:10px;border-radius:99px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-    .menu{display:flex;gap:14px;flex-wrap:wrap}
-    .menu a{opacity:.9;text-decoration:none;padding:10px 12px;border-radius:12px}
-    .menu a:hover{background:rgba(255,255,255,.06)}
-    .hero{display:grid;grid-template-columns: 1.2fr .8fr;gap:18px;align-items:start;padding:28px 0}
-    .card{background:rgba(17,26,51,.72);border:1px solid var(--border);border-radius:20px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    h1{margin:0 0 10px;font-size:34px;line-height:1.12}
-    h2{margin:0 0 10px;font-size:22px}
-    p{margin:0 0 10px;color:var(--muted);line-height:1.6}
-    .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .badge{font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.04)}
-    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;text-decoration:none;border:1px solid var(--border);background:rgba(255,255,255,.04)}
-    .btn.primary{background:linear-gradient(135deg, rgba(106,169,255,.18), rgba(124,92,255,.18));border-color:rgba(106,169,255,.35)}
-    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-    .item{padding:14px;border-radius:16px;border:1px solid var(--border);background:rgba(255,255,255,.04)}
-    .k{color:var(--text);font-weight:650}
+    .dot{
+      width:10px;height:10px;border-radius:99px;
+      background: linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow: 0 0 0 6px rgba(106,169,255,.08);
+    }
+    .menu{display:flex;gap:10px;flex-wrap:wrap}
+    .menu a{
+      opacity:.92; text-decoration:none;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid transparent;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+    }
+    .menu a:hover{background: rgba(255,255,255,.06); transform: translateY(-1px)}
+    .menu a.active{
+      opacity:1;
+      background: linear-gradient(135deg, rgba(106,169,255,.14), rgba(124,92,255,.14));
+      border-color: rgba(106,169,255,.35);
+    }
+
+    /* ---------- Card system ---------- */
+    .card{
+      background: rgba(17,26,51,.72);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding:18px;
+      box-shadow: var(--shadow);
+    }
+    .card.soft{box-shadow: 0 10px 30px rgba(0,0,0,.25)}
+    .card-header{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+    }
+
+    h1{margin:0 0 10px;font-size:36px;line-height:1.12; letter-spacing:-.4px}
+    h2{margin:0 0 10px;font-size:22px; letter-spacing:-.2px}
+    p{margin:0 0 10px;color:var(--muted);line-height:1.65}
     .muted{color:var(--muted)}
-    footer{padding:26px 0;color:var(--muted);font-size:13px}
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:18px;
+      align-items:start;
+      padding:28px 0 14px;
+    }
+    .avatar{
+      display:flex; align-items:center; justify-content:center;
+      width:64px; height:64px; border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(106,169,255,.35), transparent 60%),
+        radial-gradient(circle at 80% 70%, rgba(124,92,255,.35), transparent 55%),
+        rgba(255,255,255,.04);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      user-select:none;
+    }
+    .avatar span{
+      font-weight:800; letter-spacing:.6px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      font-size:18px;
+    }
+
+    .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .badge{
+      font-size:13px;
+      padding:7px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background: rgba(255,255,255,.04);
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .badge:hover{transform: translateY(-1px); border-color: rgba(106,169,255,.35)}
+
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:16px;
+      text-decoration:none;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      cursor:pointer;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.18)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(106,169,255,.18), rgba(124,92,255,.18));
+      border-color: rgba(106,169,255,.35);
+    }
+    .btn.ghost{
+      background: transparent;
+      border-color: rgba(255,255,255,.14);
+    }
+
     .sep{height:1px;background:var(--border);margin:16px 0}
-    @media (max-width:860px){
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+    .item{
+      padding:14px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .item:hover{
+      transform: translateY(-2px);
+      border-color: rgba(106,169,255,.30);
+      background: rgba(255,255,255,.055);
+    }
+    .k{color:var(--text);font-weight:720}
+
+    /* ---------- Works cards ---------- */
+    .works-grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      margin-top:10px;
+    }
+    .work{
+      border-radius: 18px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+      text-decoration:none;
+      display:flex;
+      flex-direction:column;
+      min-height: 220px;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .work:hover{transform: translateY(-3px); border-color: rgba(106,169,255,.32); background: rgba(255,255,255,.055)}
+    .thumb{
+      aspect-ratio: 16/9;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(106,169,255,.25), transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(124,92,255,.25), transparent 55%),
+        rgba(0,0,0,.25);
+      position:relative;
+      display:flex; align-items:flex-end;
+    }
+    .thumb img{width:100%; height:100%; object-fit:cover; opacity:.92}
+    .thumb .play{
+      position:absolute; inset:auto 12px 12px 12px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .pill{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(11,16,32,.45);
+      backdrop-filter: blur(10px);
+      color: rgba(232,236,255,.95);
+    }
+    .work-body{padding:12px 12px 14px}
+    .work-title{margin:0 0 6px; font-weight:760; letter-spacing:-.2px}
+    .work-desc{margin:0; color:var(--muted); font-size:14px; line-height:1.55}
+
+    /* ---------- Toast + floating buttons ---------- */
+    .toast{
+      position:fixed; left:50%; bottom:20px; transform: translateX(-50%);
+      background: rgba(17,26,51,.88);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 16px;
+      padding:10px 12px;
+      box-shadow: var(--shadow);
+      color: var(--text);
+      z-index: 50;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(-6px)}
+    .fab{
+      position:fixed; right:18px; bottom:18px;
+      display:flex; flex-direction:column; gap:10px;
+      z-index: 30;
+    }
+    .fab button{
+      width:44px; height:44px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(17,26,51,.72);
+      color: var(--text);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      cursor:pointer;
+      display:grid; place-items:center;
+      backdrop-filter: blur(10px);
+      transition: transform .15s ease, border-color .15s ease, opacity .15s ease;
+    }
+    .fab button:hover{transform: translateY(-2px); border-color: rgba(106,169,255,.35)}
+    .fab button[hidden]{opacity:0; pointer-events:none}
+
+    /* ---------- Reveal animation ---------- */
+    .reveal{
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    .reveal.show{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    footer{padding:26px 0;color:var(--muted);font-size:13px}
+
+    /* ---------- Accessibility ---------- */
+    :focus-visible{
+      outline: 3px solid rgba(106,169,255,.55);
+      outline-offset: 2px;
+      border-radius: 14px;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 980px){
+      .works-grid{grid-template-columns: repeat(2, 1fr)}
+    }
+    @media (max-width: 860px){
       .hero{grid-template-columns:1fr}
       .grid{grid-template-columns:1fr}
       header{position:static}
+    }
+    @media (max-width: 520px){
+      .wrap{padding:18px}
+      h1{font-size:32px}
+      .works-grid{grid-template-columns: 1fr}
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      .blob{animation:none}
+      .reveal{transition:none; transform:none}
+      .btn,.item,.work,.menu a,.fab button{transition:none}
+      #fx{display:none}
+    }
+
+    /* Placeholder link hint */
+    a[data-placeholder="1"]{
+      border-bottom: 1px dashed rgba(255,255,255,.35);
+      opacity:.92;
+    }
+    a[data-placeholder="1"]::after{
+      content:" (замени ссылку)";
+      font-size:12px;
+      color: rgba(170,180,230,.85);
+      margin-left:6px;
     }
   </style>
 </head>
 
 <body>
+  <div class="bg"></div>
+  <canvas id="fx"></canvas>
+  <div class="grid-overlay"></div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+
 <header>
   <div class="wrap">
     <nav>
       <a class="brand" href="#top">
-        <span class="dot"></span>
+        <span class="dot" aria-hidden="true"></span>
         <strong>Тимур</strong>
       </a>
-      <div class="menu">
+      <div class="menu" id="menu">
         <a href="#about">Обо мне</a>
         <a href="#skills">Навыки</a>
         <a href="#works">Работы</a>
@@ -65,51 +382,67 @@
 
 <main id="top" class="wrap">
   <section class="hero">
-    <div class="card">
-      <h1>Привет! Я <span style="color:var(--accent)">Тимур</span> 👋</h1>
-      <p>
-        Я сижу на фрилансе работаю монтажером
-      </p>
-      <div class="badges">
+    <div class="card soft reveal">
+      <div class="card-header">
+        <div>
+          <h1>Привет! Я <span style="color:var(--accent)">Тимур</span> 👋</h1>
+          <p>Я на фрилансе, работаю монтажёром.</p>
+        </div>
+        <div class="avatar" title="Можно заменить на фото">
+          <span>TS</span>
+        </div>
+      </div>
+
+      <div class="badges" aria-label="Ключевые навыки">
         <span class="badge">Монтаж</span>
         <span class="badge">After Effects</span>
         <span class="badge">Premiere Pro</span>
         <span class="badge">Motion Design</span>
         <span class="badge">Reels / Shorts</span>
       </div>
+
       <div class="btns">
-        <a class="btn primary" href="[ссылка-на-портфолио]" target="_blank" rel="noreferrer">🎬 Портфолио</a>
+        <a class="btn primary" href="[ссылка-на-портфолио]" data-placeholder="1" target="_blank" rel="noreferrer">🎬 Портфолио</a>
         <a class="btn" href="#contacts">✉️ Написать</a>
-        <a class="btn" href="[ссылка-на-резюме-если-есть]" target="_blank" rel="noreferrer">📄 Резюме</a>
+        <a class="btn ghost" href="[ссылка-на-резюме-если-есть]" data-placeholder="1" target="_blank" rel="noreferrer">📄 Резюме</a>
       </div>
+
       <div class="sep"></div>
       <p class="muted">
-        Формат сайта сделан так, чтобы его можно было сразу загрузить как итоговый проект.
+        Страница сделана так, чтобы её можно было сразу сдавать как итоговый проект (один HTML-файл).
       </p>
     </div>
 
-    <div class="card">
+    <aside class="card reveal">
       <h2>Быстрое резюме</h2>
       <div class="item"><span class="k">Роль:</span> <span class="muted">монтажёр / моушн-дизайнер</span></div>
       <div class="item" style="margin-top:10px;"><span class="k">Опыт:</span> <span class="muted">3 года</span></div>
       <div class="item" style="margin-top:10px;"><span class="k">Город/часовой пояс:</span> <span class="muted">Самара</span></div>
       <div class="item" style="margin-top:10px;"><span class="k">Готовность:</span> <span class="muted">фулл</span></div>
-    </div>
+      <div class="sep"></div>
+      <p class="muted" style="margin:0">
+        Можно добавить фото/логотип в правый блок или краткую специализацию (например: «YouTube / Reels / Crypto»).
+      </p>
+    </aside>
   </section>
 
-  <section id="about" class="card">
+  <section id="about" class="card reveal">
     <h2>Обо мне</h2>
     <p>
-      Играю в видеоигры, смотрю аниме. Веду YouTube-блог (сейчас реже), но постоянно прокачиваю качество монтажа и стараюсь точно подстраиваться под требования заказчика. Работаю с горизонтальными и вертикальными форматами (YouTube, Shorts/Reels). Хочу развиваться в моушн-дизайне: делать анимацию логотипов, графику и 3D-анимации.
-
-      Steam: https://steamcommunity.com/id/id154386008/
+      Играю в видеоигры, смотрю аниме. Веду YouTube‑блог (сейчас реже), но постоянно прокачиваю качество монтажа и стараюсь точно подстраиваться под требования заказчика.
+      Работаю с горизонтальными и вертикальными форматами (YouTube, Shorts/Reels). Хочу развиваться в моушн‑дизайне: делать анимацию логотипов, графику и 3D‑анимации.
+    </p>
+    <p class="muted" style="margin-top:12px">
+      Steam:
+      <a href="https://steamcommunity.com/id/id154386008/" target="_blank" rel="noreferrer">steamcommunity.com/id/id154386008</a>
     </p>
     <p>
-      Я работаю стабильно: выполняю ТЗ без “самодеятельности”, сдаю в срок и держу одинаковый уровень качества. Если вижу, что можно усилить ролик (темп, музыка, переходы, титры).
+      Я работаю стабильно: выполняю ТЗ без «самодеятельности», сдаю в срок и держу одинаковый уровень качества.
+      Если вижу, что можно усилить ролик (темп, музыка, переходы, титры), — предлагаю варианты.
     </p>
   </section>
 
-  <section id="skills" class="card" style="margin-top:14px;">
+  <section id="skills" class="card reveal" style="margin-top:14px;">
     <h2>Навыки</h2>
     <div class="grid">
       <div class="item">
@@ -131,26 +464,73 @@
     </div>
   </section>
 
-  <section id="works" class="card" style="margin-top:14px;">
+  <section id="works" class="card reveal" style="margin-top:14px;">
     <h2>Примеры работ</h2>
-    <p class="muted"></p>
-    <ul class="muted">
-      <li><a href="https://www.youtube.com/watch?v=v1R9bXKlRnM&t" target="_blank" rel="noreferrer">Работа для канала АниЛибрия</a></li>
-      <li><a href="https://www.youtube.com/watch?v=gQzD8myc2SU&t" target="_blank" rel="noreferrer">Работа для канала CRYPTUS</a></li>
-      <li><a href="https://t.me/+zv4JItiEl1ZlYTAy" target="_blank" rel="noreferrer">Портфолио</a></li>
-    </ul>
+    <p class="muted">Сделал карточки с превью. Если захочешь — добавим ещё и теги под каждый стиль монтажа.</p>
+
+    <div class="works-grid" role="list">
+      <!-- YouTube thumbnails:
+           v1R9bXKlRnM и gQzD8myc2SU — взяты из ваших ссылок. -->
+      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=v1R9bXKlRnM&t" target="_blank" rel="noreferrer">
+        <div class="thumb">
+          <img alt="Превью: Работа для канала АниЛибрия" src="https://i.ytimg.com/vi/v1R9bXKlRnM/hqdefault.jpg" loading="lazy" />
+          <div class="play">
+            <span class="pill">YouTube</span>
+            <span class="pill">▶</span>
+          </div>
+        </div>
+        <div class="work-body">
+          <div class="work-title">Работа для канала АниЛибрия</div>
+          <p class="work-desc">Пример монтажа под формат YouTube.</p>
+        </div>
+      </a>
+
+      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=gQzD8myc2SU&t" target="_blank" rel="noreferrer">
+        <div class="thumb">
+          <img alt="Превью: Работа для канала CRYPTUS" src="https://i.ytimg.com/vi/gQzD8myc2SU/hqdefault.jpg" loading="lazy" />
+          <div class="play">
+            <span class="pill">YouTube</span>
+            <span class="pill">▶</span>
+          </div>
+        </div>
+        <div class="work-body">
+          <div class="work-title">Работа для канала CRYPTUS</div>
+          <p class="work-desc">Пример монтажа под динамичный контент.</p>
+        </div>
+      </a>
+
+      <a class="work" role="listitem" href="https://t.me/+zv4JItiEl1ZlYTAy" target="_blank" rel="noreferrer">
+        <div class="thumb">
+          <div class="play">
+            <span class="pill">Telegram</span>
+            <span class="pill">↗</span>
+          </div>
+        </div>
+        <div class="work-body">
+          <div class="work-title">Портфолио</div>
+          <p class="work-desc">Сборник работ и примеров.</p>
+        </div>
+      </a>
+    </div>
   </section>
 
-  <section id="contacts" class="card" style="margin-top:14px;">
+  <section id="contacts" class="card reveal" style="margin-top:14px;">
     <h2>Контакты</h2>
+    <p class="muted">Добавил кнопки «скопировать» — удобно отправлять контакты в пару кликов.</p>
     <div class="grid">
       <div class="item">
         <div class="k">Telegram</div>
-        <div class="muted"><a href="https://t.me/[ваш_ник]" target="_blank" rel="noreferrer">@Timurka34</a></div>
+        <div class="muted" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <a href="https://t.me/Timurka34" target="_blank" rel="noreferrer">@Timurka34</a>
+          <button class="btn" type="button" data-copy="@Timurka34" aria-label="Скопировать Telegram">📋 Скопировать</button>
+        </div>
       </div>
       <div class="item">
         <div class="k">Email</div>
-        <div class="muted"><a href="mailto:[ваш@email]">Sadreevuz@yandex.ru</a></div>
+        <div class="muted" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <a href="mailto:Sadreevuz@yandex.ru">Sadreevuz@yandex.ru</a>
+          <button class="btn" type="button" data-copy="Sadreevuz@yandex.ru" aria-label="Скопировать Email">📋 Скопировать</button>
+        </div>
       </div>
     </div>
   </section>
@@ -161,8 +541,170 @@
   </footer>
 </main>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="fab" aria-label="Быстрые действия">
+  <button id="toTop" title="Наверх" hidden aria-label="Наверх">↑</button>
+</div>
+
 <script>
+  // Year
   document.getElementById("y").textContent = new Date().getFullYear();
+
+  // Toast helper
+  const toast = document.getElementById("toast");
+  let toastTimer = null;
+  function showToast(text){
+    toast.textContent = text;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>toast.classList.remove("show"), 1400);
+  }
+
+  // Copy buttons
+  document.querySelectorAll("[data-copy]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const value = btn.getAttribute("data-copy");
+      try{
+        await navigator.clipboard.writeText(value);
+        showToast("Скопировано: " + value);
+      }catch(e){
+        // Fallback
+        const ta = document.createElement("textarea");
+        ta.value = value;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        showToast("Скопировано: " + value);
+      }
+    });
+  });
+
+  // Scrollspy
+  const menuLinks = Array.from(document.querySelectorAll("#menu a"));
+  const sections = menuLinks
+    .map(a => document.querySelector(a.getAttribute("href")))
+    .filter(Boolean);
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = "#" + entry.target.id;
+      const link = menuLinks.find(a => a.getAttribute("href") === id);
+      if (!link) return;
+      if (entry.isIntersecting){
+        menuLinks.forEach(a => a.classList.remove("active"));
+        link.classList.add("active");
+      }
+    });
+  }, { root: null, threshold: 0.35 });
+
+  sections.forEach(s => io.observe(s));
+
+  // Reveal-on-scroll
+  const revealEls = document.querySelectorAll(".reveal");
+  const ro = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add("show");
+        ro.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.12});
+  revealEls.forEach(el => ro.observe(el));
+
+  // Back-to-top button
+  const toTop = document.getElementById("toTop");
+  window.addEventListener("scroll", () => {
+    const show = window.scrollY > 700;
+    toTop.hidden = !show;
+  });
+  toTop.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+
+  // Particles (lightweight)
+  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canvas = document.getElementById("fx");
+  const ctx = canvas.getContext("2d", { alpha: true });
+
+  let W=0,H=0, dpr=1;
+  const particles = [];
+  const MAX = 72; // keep it light
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.width = Math.floor(window.innerWidth * dpr);
+    H = canvas.height = Math.floor(window.innerHeight * dpr);
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+  }
+  window.addEventListener("resize", resize, {passive:true});
+  resize();
+
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+
+  function init(){
+    particles.length = 0;
+    for(let i=0;i<MAX;i++){
+      particles.push({
+        x: rand(0,W),
+        y: rand(0,H),
+        r: rand(0.9, 2.2) * dpr,
+        vx: rand(-0.18, 0.18) * dpr,
+        vy: rand(-0.12, 0.22) * dpr,
+        a: rand(0.12, 0.26)
+      });
+    }
+  }
+  init();
+
+  function step(){
+    ctx.clearRect(0,0,W,H);
+
+    // dots
+    for(const p of particles){
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if(p.x < -20) p.x = W + 20;
+      if(p.x > W + 20) p.x = -20;
+      if(p.y < -20) p.y = H + 20;
+      if(p.y > H + 20) p.y = -20;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = "rgba(232,236,255," + p.a + ")";
+      ctx.fill();
+    }
+
+    // connections (very subtle)
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const a = particles[i], b = particles[j];
+        const dx = a.x-b.x, dy = a.y-b.y;
+        const dist = Math.hypot(dx,dy);
+        const maxDist = 160 * dpr;
+        if(dist < maxDist){
+          const alpha = (1 - dist/maxDist) * 0.08;
+          ctx.strokeStyle = "rgba(106,169,255," + alpha + ")";
+          ctx.lineWidth = 1 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  if(!prefersReduced){
+    requestAnimationFrame(step);
+  }else{
+    canvas.style.display = "none";
+  }
 </script>
 </body>
 </html>
