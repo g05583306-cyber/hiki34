@@ -4,6 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0b1020" />
+
+  <meta name="description" content="Я на фрилансе, работаю монтажёром." />
+  <meta name="color-scheme" content="dark light" />
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:title" content="Обо мне — Тимур" />
+  <meta property="og:description" content="Я на фрилансе, работаю монтажёром." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <!-- TODO: добавь og:url и og:image, когда будет финальный домен/картинка -->
+
+  <!-- X (Twitter) cards -->
+  <meta name="twitter:card" content="summary" />
   <title>Обо мне — Тимур</title>
 
   <!--
@@ -87,6 +100,59 @@
       opacity:.75;
     }
 
+/* ---------- Theme (optional light mode) ---------- */
+html[data-theme="light"]{
+  --bg:#f7f9ff;
+  --card:#ffffff;
+  --text:#0b1020;
+  --muted:#4b567e;
+  --accent:#2f7dff;
+  --accent2:#6b4dff;
+  --accent3:#0aaed1;
+  --border:rgba(11,16,32,.12);
+  --shadow: 0 16px 40px rgba(0,0,0,.12);
+}
+html[data-theme="light"] header{
+  background: rgba(247,249,255,.72);
+  border-bottom: 1px solid var(--border);
+}
+html[data-theme="light"] .card{background: rgba(255,255,255,.78)}
+html[data-theme="light"] .grid-overlay{opacity:.22}
+html[data-theme="light"] .thumb{background: rgba(11,16,32,.06)}
+html[data-theme="light"] .pill{
+  background: rgba(247,249,255,.70);
+  border-color: rgba(11,16,32,.10);
+  color: rgba(11,16,32,.88);
+}
+
+section{scroll-margin-top:92px}
+
+.right{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+}
+.btn.icon{
+  width:44px;
+  justify-content:center;
+  padding:10px;
+}
+.skip{
+  position:fixed;
+  left:12px; top:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  background: rgba(17,26,51,.92);
+  border:1px solid rgba(255,255,255,.14);
+  transform: translateY(-130%);
+  transition: transform .15s ease;
+  z-index: 100;
+  text-decoration:none;
+}
+.skip:focus{transform: translateY(0)}
+
     /* ---------- Layout ---------- */
     .wrap{max-width:980px;margin:0 auto;padding:24px}
     header{
@@ -117,6 +183,38 @@
       background: linear-gradient(135deg, rgba(106,169,255,.14), rgba(124,92,255,.14));
       border-color: rgba(106,169,255,.35);
     }
+
+
+    /* ---------- Header progress bar ---------- */
+    .progress{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:3px;
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+    .progress .bar{
+      height:100%;
+      width:100%;
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      background: linear-gradient(90deg, rgba(106,169,255,.95), rgba(124,92,255,.95));
+    }
+
+    /* ---------- Hover spotlight (fun, subtle) ---------- */
+    .card.fx, .work.fx{ position:relative; overflow:hidden; }
+    .card.fx::before, .work.fx::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      pointer-events:none;
+      background: radial-gradient(520px circle at var(--mx,50%) var(--my,30%), rgba(106,169,255,.12), transparent 42%);
+      opacity:0;
+      transition: opacity .18s ease;
+      z-index:0;
+    }
+    .card.fx:hover::before, .work.fx:hover::before{ opacity:1; }
+    .card.fx > *, .work.fx > *{ position:relative; z-index:1; }
 
     /* ---------- Card system ---------- */
     .card{
@@ -354,6 +452,22 @@
       margin-left:6px;
     }
   </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Тимур",
+  "description": "Я на фрилансе, работаю монтажёром.",
+  "jobTitle": "монтажёр / моушн-дизайнер",
+  "sameAs": [
+    "https://steamcommunity.com/id/id154386008/",
+    "https://t.me/Timurka34",
+    "https://t.me/+zv4JItiEl1ZlYTAy"
+  ],
+  "email": "mailto:Sadreevuz@yandex.ru"
+}
+  </script>
 </head>
 
 <body>
@@ -363,6 +477,8 @@
   <div class="blob b1"></div>
   <div class="blob b2"></div>
 
+  <a class="skip" href="#top">К содержимому</a>
+
 <header>
   <div class="wrap">
     <nav>
@@ -370,14 +486,19 @@
         <span class="dot" aria-hidden="true"></span>
         <strong>Тимур</strong>
       </a>
-      <div class="menu" id="menu">
+      <div class="right">
+        <div class="menu" id="menu" aria-label="Навигация">
         <a href="#about">Обо мне</a>
         <a href="#skills">Навыки</a>
         <a href="#works">Работы</a>
         <a href="#contacts">Контакты</a>
       </div>
+        <button class="btn icon" id="themeToggle" type="button" aria-label="Переключить тему" title="Тема">🌓</button>
+      </div>
     </nav>
   </div>
+  <div class="progress" aria-hidden="true"><div class="bar" id="progressBar"></div></div>
+
 </header>
 
 <main id="top" class="wrap">
@@ -402,7 +523,7 @@
       </div>
 
       <div class="btns">
-        <a class="btn primary" href="[ссылка-на-портфолио]" data-placeholder="1" target="_blank" rel="noreferrer">🎬 Портфолио</a>
+        <a class="btn primary" href="https://t.me/+zv4JItiEl1ZlYTAy" target="_blank" rel="noreferrer">🎬 Портфолио</a>
         <a class="btn" href="#contacts">✉️ Написать</a>
         <a class="btn ghost" href="[ссылка-на-резюме-если-есть]" data-placeholder="1" target="_blank" rel="noreferrer">📄 Резюме</a>
       </div>
@@ -470,7 +591,7 @@
 
     <div class="works-grid" role="list">
       <!-- YouTube thumbnails:
-           v1R9bXKlRnM и gQzD8myc2SU — взяты из ваших ссылок. -->
+           v1R9bXKlRnM, gQzD8myc2SU, L-i1PbvRnpk и 70xOUBQDogo — взяты из ваших ссылок. -->
       <a class="work" role="listitem" href="https://www.youtube.com/watch?v=v1R9bXKlRnM&t" target="_blank" rel="noreferrer">
         <div class="thumb">
           <img alt="Превью: Работа для канала АниЛибрия" src="https://i.ytimg.com/vi/v1R9bXKlRnM/hqdefault.jpg" loading="lazy" />
@@ -499,18 +620,34 @@
         </div>
       </a>
 
-      <a class="work" role="listitem" href="https://t.me/+zv4JItiEl1ZlYTAy" target="_blank" rel="noreferrer">
+      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=L-i1PbvRnpk&t=39s" target="_blank" rel="noreferrer">
         <div class="thumb">
+          <img alt="Превью: YouTube работа 3" src="https://i.ytimg.com/vi/L-i1PbvRnpk/hqdefault.jpg" loading="lazy" />
           <div class="play">
-            <span class="pill">Telegram</span>
-            <span class="pill">↗</span>
+            <span class="pill">YouTube</span>
+            <span class="pill">▶</span>
           </div>
         </div>
         <div class="work-body">
-          <div class="work-title">Портфолио</div>
-          <p class="work-desc">Сборник работ и примеров.</p>
+          <div class="work-title">YouTube — работа 3</div>
+          <p class="work-desc">Пример монтажа (ссылка на видео).</p>
         </div>
       </a>
+
+      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=70xOUBQDogo&t=1s" target="_blank" rel="noreferrer">
+        <div class="thumb">
+          <img alt="Превью: YouTube работа 4" src="https://i.ytimg.com/vi/70xOUBQDogo/hqdefault.jpg" loading="lazy" />
+          <div class="play">
+            <span class="pill">YouTube</span>
+            <span class="pill">▶</span>
+          </div>
+        </div>
+        <div class="work-body">
+          <div class="work-title">YouTube — работа 4</div>
+          <p class="work-desc">Пример монтажа (ссылка на видео).</p>
+        </div>
+      </a>
+
     </div>
   </section>
 
@@ -532,7 +669,16 @@
           <button class="btn" type="button" data-copy="Sadreevuz@yandex.ru" aria-label="Скопировать Email">📋 Скопировать</button>
         </div>
       </div>
-    </div>
+
+      <div class="item">
+        <div class="k">Портфолио</div>
+        <div class="muted" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <a href="https://t.me/+zv4JItiEl1ZlYTAy" target="_blank" rel="noreferrer">t.me/+zv4JItiEl1ZlYTAy</a>
+          <button class="btn" type="button" data-copy="https://t.me/+zv4JItiEl1ZlYTAy" aria-label="Скопировать ссылку на портфолио">📋 Скопировать</button>
+        </div>
+      </div>
+
+</div>
   </section>
 
   <footer>
@@ -550,6 +696,43 @@
 <script>
   // Year
   document.getElementById("y").textContent = new Date().getFullYear();
+
+// Theme (dark/light)
+const THEME_KEY = "theme";
+const themeBtn = document.getElementById("themeToggle");
+function applyTheme(mode){
+  if(mode === "light"){
+    document.documentElement.setAttribute("data-theme","light");
+  }else{
+    document.documentElement.removeAttribute("data-theme");
+  }
+  if(themeBtn){
+    themeBtn.textContent = mode === "light" ? "🌙" : "☀️";
+    themeBtn.setAttribute("aria-label", mode === "light" ? "Включить тёмную тему" : "Включить светлую тему");
+    themeBtn.title = mode === "light" ? "Тёмная тема" : "Светлая тема";
+  }
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if(metaTheme){
+    metaTheme.setAttribute("content", mode === "light" ? "#f7f9ff" : "#0b1020");
+  }
+}
+const savedTheme = localStorage.getItem(THEME_KEY);
+if(savedTheme === "light" || savedTheme === "dark"){
+  applyTheme(savedTheme);
+}else{
+  // Keep default dark, but respect system preference if it is light
+  const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+  applyTheme(prefersLight ? "light" : "dark");
+}
+if(themeBtn){
+  themeBtn.addEventListener("click", () => {
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    const next = isLight ? "dark" : "light";
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+  });
+}
+
 
   // Toast helper
   const toast = document.getElementById("toast");
@@ -620,11 +803,47 @@
   window.addEventListener("scroll", () => {
     const show = window.scrollY > 700;
     toTop.hidden = !show;
-  });
+  }, {passive:true});
   toTop.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+
+
+  // Header scroll progress
+  const progressBar = document.getElementById("progressBar");
+  function updateProgress(){
+    if(!progressBar) return;
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const height = doc.scrollHeight - doc.clientHeight;
+    const p = height > 0 ? (scrollTop / height) : 0;
+    const clamped = Math.min(Math.max(p, 0), 1);
+    progressBar.style.transform = "scaleX(" + clamped + ")";
+  }
+  window.addEventListener("scroll", updateProgress, {passive:true});
+  updateProgress();
 
   // Particles (lightweight)
   const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+  // Hover spotlight (subtle)
+  if(!prefersReduced){
+    const fxEls = document.querySelectorAll(".card, .work");
+    fxEls.forEach(el => {
+      el.classList.add("fx");
+      el.addEventListener("mousemove", (e) => {
+        const r = el.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width) * 100;
+        const y = ((e.clientY - r.top) / r.height) * 100;
+        el.style.setProperty("--mx", x.toFixed(2) + "%");
+        el.style.setProperty("--my", y.toFixed(2) + "%");
+      }, {passive:true});
+      el.addEventListener("mouseleave", () => {
+        el.style.removeProperty("--mx");
+        el.style.removeProperty("--my");
+      }, {passive:true});
+    });
+  }
+
   const canvas = document.getElementById("fx");
   const ctx = canvas.getContext("2d", { alpha: true });
 
@@ -638,6 +857,7 @@
     H = canvas.height = Math.floor(window.innerHeight * dpr);
     canvas.style.width = window.innerWidth + "px";
     canvas.style.height = window.innerHeight + "px";
+    init();
   }
   window.addEventListener("resize", resize, {passive:true});
   resize();
@@ -657,7 +877,6 @@
       });
     }
   }
-  init();
 
   function step(){
     ctx.clearRect(0,0,W,H);
