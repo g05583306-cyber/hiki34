@@ -1,955 +1,1361 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b1020" />
-
-  <meta name="description" content="Я на фрилансе, работаю монтажёром." />
-  <meta name="color-scheme" content="dark light" />
-
-  <!-- Open Graph / social preview -->
-  <meta property="og:title" content="Обо мне — Тимур" />
-  <meta property="og:description" content="Я на фрилансе, работаю монтажёром." />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="ru_RU" />
-  <!-- TODO: добавь og:url и og:image, когда будет финальный домен/картинка -->
-
-  <!-- X (Twitter) cards -->
-  <meta name="twitter:card" content="summary" />
-  <title>Обо мне — Тимур</title>
-
-  <!--
-    Обновлённая версия: анимированный фон, scrollspy меню, мягкие анимации, карточки работ,
-    кнопки копирования контактов, тост-уведомления, кнопка "вверх".
-  -->
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Тимур — Видео монтажёр / Motion Editor</title>
+<meta content="Портфолио Тимура: монтаж YouTube, Shorts/Reels, crypto/anime/gaming. Акцент на темп, субтитры, визуальные вставки и удержание внимания." name="description"/>
+<meta content="#090611" name="theme-color"/>
+<meta content="Тимур — Видео монтажёр / Motion Editor" property="og:title"/>
+<meta content="YouTube / Shorts / Reels. Избранные кейсы + Telegram-портфолио." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="ru_RU" property="og:locale"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Unbounded:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<style>
     :root{
-      --bg:#0b1020;
-      --card:#111a33;
-      --text:#e8ecff;
-      --muted:#aab4e6;
-      --accent:#6aa9ff;
-      --accent2:#7c5cff;
-      --accent3:#31d3ff;
-      --border:rgba(255,255,255,.10);
-      --shadow: 0 18px 45px rgba(0,0,0,.35);
-      --radius: 22px;
+      --bg:#090611;
+      --bg2:#0f0a1b;
+      --card:#141022;
+      --card2:#1a1330;
+      --text:#f2eeff;
+      --muted:#b7aedb;
+      --line:rgba(255,255,255,.08);
+
+      --violet:#8B5CFF;
+      --pink:#FF2EA6;
+      --cyan:#56D6FF;
+
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --container: 1180px;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
       background: var(--bg);
       overflow-x:hidden;
+      line-height:1.45;
     }
-    a{color:inherit}
-    img{max-width:100%; display:block}
-    ::selection{background: rgba(106,169,255,.28)}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
 
-    /* ---------- Background (animated blobs + subtle grid) ---------- */
     .bg{
-      position:fixed; inset:0; z-index:-3;
+      position:fixed; inset:0; z-index:-5;
       background:
-        radial-gradient(1200px 600px at 20% 0%, rgba(122,92,255,.25), transparent 60%),
-        radial-gradient(900px 600px at 80% 10%, rgba(106,169,255,.20), transparent 55%),
-        radial-gradient(1200px 900px at 50% 100%, rgba(49,211,255,.10), transparent 55%),
-        var(--bg);
+        radial-gradient(900px 500px at 10% 0%, rgba(139,92,255,.22), transparent 62%),
+        radial-gradient(700px 500px at 90% 8%, rgba(255,46,166,.16), transparent 60%),
+        radial-gradient(900px 700px at 60% 100%, rgba(86,214,255,.08), transparent 65%),
+        linear-gradient(180deg, #090611 0%, #0b0715 35%, #090611 100%);
     }
-    .grid-overlay{
-      position:fixed; inset:0; z-index:-2; pointer-events:none;
+    .noise{
+      position:fixed; inset:0; z-index:-4; pointer-events:none; opacity:.07;
       background-image:
-        linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size: 54px 54px;
-      mask-image: radial-gradient(800px 500px at 50% 0%, rgba(0,0,0,1), transparent 70%);
-      opacity:.45;
+        radial-gradient(circle at 20% 20%, #fff 0 1px, transparent 1.4px),
+        radial-gradient(circle at 80% 30%, #fff 0 1px, transparent 1.4px),
+        radial-gradient(circle at 40% 70%, #fff 0 1px, transparent 1.2px),
+        radial-gradient(circle at 65% 80%, #fff 0 1px, transparent 1.2px);
+      background-size: 260px 260px, 340px 340px, 300px 300px, 380px 380px;
+      animation: stars 18s linear infinite;
+    }
+    @keyframes stars{
+      from{transform:translateY(0)}
+      to{transform:translateY(-20px)}
     }
     .blob{
-      position:fixed; width:520px; height:520px; z-index:-1; filter: blur(44px);
-      border-radius: 999px; opacity:.35;
-      background: radial-gradient(circle at 30% 30%, rgba(106,169,255,.9), transparent 55%),
-                  radial-gradient(circle at 70% 70%, rgba(124,92,255,.9), transparent 55%);
-      animation: floaty 14s ease-in-out infinite;
-      transform: translate3d(0,0,0);
-      pointer-events:none;
+      position:fixed; z-index:-3; pointer-events:none; filter: blur(50px); opacity:.22; border-radius:999px;
+      animation: float 14s ease-in-out infinite;
     }
-    .blob.b2{
-      width:620px;height:620px; opacity:.25;
-      background: radial-gradient(circle at 30% 30%, rgba(49,211,255,.9), transparent 55%),
-                  radial-gradient(circle at 70% 70%, rgba(124,92,255,.9), transparent 55%);
-      animation-duration: 18s;
-    }
-    .blob.b1{left:-140px; top:-160px}
-    .blob.b2{right:-220px; top:120px}
-
-    @keyframes floaty{
-      0%{transform: translate(-8px,-12px) scale(1)}
-      50%{transform: translate(10px,14px) scale(1.03)}
-      100%{transform: translate(-8px,-12px) scale(1)}
+    .blob.b1{ width:420px;height:420px; left:-110px; top:80px; background:var(--violet);}
+    .blob.b2{ width:360px;height:360px; right:-80px; top:120px; background:var(--pink); animation-duration:17s;}
+    .blob.b3{ width:320px;height:320px; left:45%; top:62%; background:var(--cyan); animation-duration:20s;}
+    @keyframes float{
+      0%,100%{ transform: translate3d(0,0,0) scale(1); }
+      50%{ transform: translate3d(14px,-10px,0) scale(1.04); }
     }
 
-    /* Canvas particles */
-    #fx{
-      position:fixed; inset:0; z-index:-2;
-      pointer-events:none;
+    .container{max-width:var(--container); margin:0 auto; padding:0 18px;}
+    .section{padding:26px 0}
+    .card{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      border:1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+    .card::after{
+      content:"";
+      position:absolute; inset:-1px; pointer-events:none;
+      background: radial-gradient(600px circle at var(--mx,50%) var(--my,20%), rgba(255,46,166,.08), transparent 40%);
+      opacity:0;
+      transition:opacity .2s ease;
+    }
+    .card:hover::after{opacity:1}
+
+    .glow-line{
+      position:absolute; inset:auto 0 0 0; height:2px;
+      background: linear-gradient(90deg, transparent, rgba(139,92,255,.7), rgba(255,46,166,.7), transparent);
       opacity:.75;
     }
 
-/* ---------- Theme (optional light mode) ---------- */
-html[data-theme="light"]{
-  --bg:#f7f9ff;
-  --card:#ffffff;
-  --text:#0b1020;
-  --muted:#4b567e;
-  --accent:#2f7dff;
-  --accent2:#6b4dff;
-  --accent3:#0aaed1;
-  --border:rgba(11,16,32,.12);
-  --shadow: 0 16px 40px rgba(0,0,0,.12);
-}
-html[data-theme="light"] header{
-  background: rgba(247,249,255,.72);
-  border-bottom: 1px solid var(--border);
-}
-html[data-theme="light"] .card{background: rgba(255,255,255,.78)}
-html[data-theme="light"] .grid-overlay{opacity:.22}
-html[data-theme="light"] .thumb{background: rgba(11,16,32,.06)}
-html[data-theme="light"] .pill{
-  background: rgba(247,249,255,.70);
-  border-color: rgba(11,16,32,.10);
-  color: rgba(11,16,32,.88);
-}
-
-section{scroll-margin-top:92px}
-
-.right{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:flex-end;
-  flex-wrap:wrap;
-}
-.btn.icon{
-  width:44px;
-  justify-content:center;
-  padding:10px;
-}
-.skip{
-  position:fixed;
-  left:12px; top:10px;
-  padding:10px 12px;
-  border-radius:14px;
-  background: rgba(17,26,51,.92);
-  border:1px solid rgba(255,255,255,.14);
-  transform: translateY(-130%);
-  transition: transform .15s ease;
-  z-index: 100;
-  text-decoration:none;
-}
-.skip:focus{transform: translateY(0)}
-
-    /* ---------- Layout ---------- */
-    .wrap{max-width:980px;margin:0 auto;padding:24px}
-    header{
-      position:sticky;top:0;z-index:10;
-      backdrop-filter: blur(12px);
-      background: rgba(11,16,32,.60);
-      border-bottom: 1px solid var(--border);
+    /* Header */
+    .header{
+      position:sticky; top:0; z-index:50;
+      background: rgba(9,6,17,.65);
+      backdrop-filter: blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
-    nav{
-      display:flex; gap:14px; align-items:center; justify-content:space-between;
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:14px 0;
     }
-    .brand{display:flex;gap:10px;align-items:center;text-decoration:none}
-    .dot{
-      width:10px;height:10px;border-radius:99px;
-      background: linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow: 0 0 0 6px rgba(106,169,255,.08);
+    .brand{
+      display:flex; align-items:center; gap:10px; min-width:max-content;
     }
-    .menu{display:flex;gap:10px;flex-wrap:wrap}
+    .brand-badge{
+      width:34px; height:34px; border-radius:12px;
+      display:grid; place-items:center;
+      background: linear-gradient(135deg, rgba(139,92,255,.25), rgba(255,46,166,.25));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 0 28px rgba(139,92,255,.18);
+      font-weight:800;
+      font-size:12px;
+      color:#fff;
+    }
+    .brand-text{
+      display:flex; flex-direction:column; line-height:1.1;
+    }
+    .brand-text b{font-size:14px}
+    .brand-text span{font-size:11px; color:var(--muted)}
+
+    .menu{
+      display:flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
+    }
     .menu a{
-      opacity:.92; text-decoration:none;
-      padding:10px 12px; border-radius:14px;
+      padding:9px 12px;
+      border-radius:12px;
+      color:var(--muted);
       border:1px solid transparent;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+      transition:.18s ease;
+      font-size:14px;
     }
-    .menu a:hover{background: rgba(255,255,255,.06); transform: translateY(-1px)}
-    .menu a.active{
-      opacity:1;
-      background: linear-gradient(135deg, rgba(106,169,255,.14), rgba(124,92,255,.14));
-      border-color: rgba(106,169,255,.35);
+    .menu a:hover{
+      color:var(--text);
+      border-color: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
     }
 
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border:none; cursor:pointer;
+      border-radius:14px;
+      padding:12px 16px;
+      font-weight:700;
+      transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease, border-color .14s ease, background .14s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0)}
+    .btn-primary{
+      color:#fff;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      box-shadow: 0 8px 30px rgba(255,46,166,.25), 0 4px 18px rgba(139,92,255,.22);
+    }
+    .btn-secondary{
+      color:var(--text);
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .btn-ghost{
+      color:var(--muted);
+      background: transparent;
+      border:1px dashed rgba(255,255,255,.12);
+    }
+    .btn-small{
+      padding:9px 12px;
+      border-radius:12px;
+      font-size:13px;
+      font-weight:700;
+    }
 
-    /* ---------- Header progress bar ---------- */
-    .progress{
-      position:absolute;
-      left:0; right:0; bottom:0;
-      height:3px;
-      background: rgba(255,255,255,.06);
+    /* Hero */
+    .hero{
+      margin-top:16px;
+      padding:26px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:18px;
+      min-height: 540px;
+      align-items:stretch;
+    }
+    .hero-left{
+      display:flex; flex-direction:column; gap:18px; justify-content:center;
+      padding:12px 4px 12px 2px;
+    }
+    .eyebrow{
+      display:inline-flex; gap:8px; align-items:center;
+      width:max-content;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .eyebrow-dot{
+      width:8px;height:8px;border-radius:999px;
+      background:linear-gradient(135deg,var(--cyan),var(--pink));
+      box-shadow:0 0 14px rgba(86,214,255,.6);
+    }
+    h1{
+      margin:0;
+      font-family:"Unbounded", sans-serif;
+      font-size:clamp(28px, 4vw, 46px);
+      line-height:1.08;
+      letter-spacing:-.02em;
+    }
+    .hero-sub{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:56ch;
+    }
+    .hero-actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .hero-note{
+      color:var(--muted);
+      font-size:13px;
+      border-top:1px solid rgba(255,255,255,.06);
+      padding-top:14px;
+    }
+    .badge-row{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .badge{
+      padding:8px 10px;
+      border-radius:11px;
+      font-size:12px;
+      color:#e8e0ff;
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+    }
+
+    .hero-right{
+      position:relative;
+      min-height:420px;
+      border-radius:24px;
+      border:1px solid var(--border);
+      background:radial-gradient(120% 100% at 20% 0%, rgba(82,156,255,.08), transparent 55%),
+                 radial-gradient(120% 100% at 100% 0%, rgba(255,59,197,.08), transparent 50%),
+                 rgba(255,255,255,.015);
       overflow:hidden;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
     }
-    .progress .bar{
-      height:100%;
-      width:100%;
-      transform: scaleX(0);
-      transform-origin: 0 50%;
-      background: linear-gradient(90deg, rgba(106,169,255,.95), rgba(124,92,255,.95));
-    }
-
-    /* ---------- Hover spotlight (fun, subtle) ---------- */
-    .card.fx, .work.fx{ position:relative; overflow:hidden; }
-    .card.fx::before, .work.fx::before{
+    .hero-right::before{
       content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(to right, rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity:.25;
+      mask-image: radial-gradient(circle at 60% 45%, #000 45%, transparent 90%);
+    }
+    .hero-character{
       position:absolute;
-      inset:-1px;
+      right:16px;
+      bottom:-4px;
+      width:min(88%, 420px);
+      height:auto;
+      max-height:calc(100% - 8px);
+      object-fit:contain;
+      object-position:bottom center;
+      filter:drop-shadow(0 20px 32px rgba(0,0,0,.35));
+      z-index:1;
       pointer-events:none;
-      background: radial-gradient(520px circle at var(--mx,50%) var(--my,30%), rgba(106,169,255,.12), transparent 42%);
-      opacity:0;
-      transition: opacity .18s ease;
+    }
+    .hero-character-fallback{
+      position:absolute;
+      inset:18px;
+      border-radius:18px;
+      border:1px dashed rgba(255,255,255,.14);
+      display:none;
+      place-items:center;
+      text-align:center;
+      padding:16px;
+      color:var(--muted);
+      background:rgba(255,255,255,.02);
       z-index:0;
     }
-    .card.fx:hover::before, .work.fx:hover::before{ opacity:1; }
-    .card.fx > *, .work.fx > *{ position:relative; z-index:1; }
-
-    /* ---------- Card system ---------- */
-    .card{
-      background: rgba(17,26,51,.72);
+    .floating{
+      position:absolute;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(13,11,28,.72);
       border:1px solid var(--border);
-      border-radius: var(--radius);
-      padding:18px;
-      box-shadow: var(--shadow);
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
+      font-size:13px;
+      color:var(--text);
+      z-index:2;
     }
-    .card.soft{box-shadow: 0 10px 30px rgba(0,0,0,.25)}
-    .card-header{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
+    .floating small{display:block;color:var(--muted);font-size:11px}
+    .f1{left:14px; top:14px}
+    .f2{left:18px; bottom:18px; animation-delay:.6s}
+    .f3{right:16px; top:24px; animation-delay:1.2s}
+    @keyframes levitate{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-5px)}
     }
 
-    h1{margin:0 0 10px;font-size:36px;line-height:1.12; letter-spacing:-.4px}
-    h2{margin:0 0 10px;font-size:22px; letter-spacing:-.2px}
-    p{margin:0 0 10px;color:var(--muted);line-height:1.65}
-    .muted{color:var(--muted)}
+    /* Shared headings */
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      margin-bottom:14px;
+    }
+    .section-head h2{
+      margin:0;
+      font-family:"Unbounded", sans-serif;
+      font-size: clamp(20px, 2.4vw, 30px);
+      line-height:1.1;
+      letter-spacing:-.02em;
+    }
+    .section-head p{
+      margin:0; color:var(--muted); font-size:14px;
+      max-width:58ch;
+    }
 
-    .hero{
+    /* Featured works */
+    .works-wrap{padding:22px}
+    .featured-grid{
       display:grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap:18px;
-      align-items:start;
-      padding:28px 0 14px;
+      grid-template-columns: 1.15fr .85fr;
+      gap:14px;
     }
-    .avatar{
-      display:flex; align-items:center; justify-content:center;
-      width:64px; height:64px; border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
+    .featured-card{
+      display:grid;
+      gap:0;
+      overflow:hidden;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .featured-card:hover{transform:translateY(-2px); border-color:rgba(255,46,166,.25)}
+    .featured-thumb{
+      position:relative;
+      aspect-ratio: 16/9;
+      background:#0f0a1f;
+      overflow:hidden;
+    }
+    .featured-thumb img{
+      width:100%; height:100%; object-fit:cover;
+      transform: scale(1.001);
+      transition: transform .35s ease;
+    }
+    .featured-card:hover .featured-thumb img{transform:scale(1.03)}
+    .overlay-tags{
+      position:absolute; left:10px; right:10px; top:10px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .tag{
+      padding:7px 10px; border-radius:999px;
+      background: rgba(7,4,16,.75);
+      border:1px solid rgba(255,255,255,.10);
+      color:#efe9ff;
+      font-size:12px; font-weight:700;
+      backdrop-filter: blur(6px);
+    }
+    .featured-body{padding:16px}
+    .featured-body h3{margin:0 0 8px;font-size:18px}
+    .featured-body p{margin:0;color:var(--muted);font-size:14px}
+    .featured-actions{margin-top:12px; display:flex; gap:8px; flex-wrap:wrap}
+
+    .side-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    .mini-card{
+      display:grid;
+      grid-template-columns: 132px 1fr;
+      gap:12px;
+      align-items:stretch;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      overflow:hidden;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .mini-card:hover{transform:translateY(-2px); border-color:rgba(139,92,255,.24)}
+    .mini-thumb{
+      position:relative; min-height:100%;
+      background:#100b1c;
+    }
+    .mini-thumb img{
+      width:100%; height:100%; object-fit:cover;
+    }
+    .mini-body{
+      padding:12px 12px 12px 0;
+      display:flex; flex-direction:column; gap:6px; justify-content:center;
+    }
+    .mini-body b{font-size:14px}
+    .mini-body p{margin:0; color:var(--muted); font-size:13px}
+    .mini-body .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .label{
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:12px; color:#efe9ff;
+      padding:6px 9px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.025);
+      width:max-content;
+    }
+    .dot-sm{width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 14px rgba(255,46,166,.55)}
+
+    .more-works{
+      margin-top:14px;
+      display:flex; gap:10px; flex-wrap:wrap;
+      justify-content:flex-start;
+    }
+
+    /* Telegram spotlight */
+    .telegram-block{
+      padding:22px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+      align-items:stretch;
+      position:relative;
+    }
+    .telegram-block::before{
+      content:"";
+      position:absolute; inset:0;
       background:
-        radial-gradient(circle at 30% 30%, rgba(106,169,255,.35), transparent 60%),
-        radial-gradient(circle at 80% 70%, rgba(124,92,255,.35), transparent 55%),
-        rgba(255,255,255,.04);
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-      user-select:none;
+        radial-gradient(500px 250px at 25% 10%, rgba(139,92,255,.14), transparent 60%),
+        radial-gradient(460px 240px at 85% 80%, rgba(255,46,166,.12), transparent 60%);
+      pointer-events:none;
     }
-    .avatar span{
-      font-weight:800; letter-spacing:.6px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
+    .telegram-left, .telegram-right{position:relative; z-index:1}
+    .telegram-left{
+      display:flex; flex-direction:column; justify-content:center; gap:14px;
+      padding:8px;
+    }
+    .telegram-left h3{
+      margin:0;
+      font-family:"Unbounded", sans-serif;
+      font-size: clamp(20px, 2.4vw, 28px);
+      line-height:1.15;
+      letter-spacing:-.02em;
+    }
+    .telegram-left p{
+      margin:0; color:var(--muted); font-size:15px;
+      max-width:54ch;
+    }
+    .bullet-list{
+      display:grid; gap:8px;
+      margin:4px 0 0;
+    }
+    .bullet{
+      display:flex; align-items:flex-start; gap:10px;
+      color:#ebe4ff; font-size:14px;
+    }
+    .bullet i{
+      width:18px;height:18px;border-radius:50%;
+      display:grid; place-items:center;
+      font-style:normal; font-weight:800; font-size:11px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--cyan);
+      margin-top:1px;
+      box-shadow: 0 0 18px rgba(86,214,255,.14);
+    }
+    .telegram-actions{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;
+    }
+
+    .telegram-right{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      background: rgba(255,255,255,.02);
+      padding:14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:stretch;
+    }
+    .phone-mock{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      padding:10px;
+      min-height:260px;
+      position:relative;
+      overflow:hidden;
+    }
+    .phone-top{
+      display:flex; align-items:center; justify-content:space-between;
+      color:var(--muted); font-size:12px;
+      margin-bottom:10px;
+    }
+    .phone-list{
+      display:grid; gap:8px;
+    }
+    .phone-item{
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      border-radius:12px;
+      padding:10px;
+      display:grid; gap:4px;
+    }
+    .phone-item b{font-size:13px}
+    .phone-item span{font-size:12px; color:var(--muted)}
+    .qr-box{
+      border-radius:16px;
+      border:1px dashed rgba(255,255,255,.12);
+      background: rgba(255,255,255,.015);
+      display:grid; place-items:center;
+      text-align:center;
+      padding:12px;
+      position:relative;
+      overflow:hidden;
+      min-height:260px;
+    }
+    .qr-box img{
+      width:min(100%, 180px);
+      aspect-ratio:1/1;
+      object-fit:contain;
+      background:#fff;
+      padding:8px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .qr-note{
+      color:var(--muted); font-size:12px; margin-top:10px;
+    }
+    .mini-char{
+      position:absolute;
+      right:-10px; bottom:-6px;
+      width:110px; opacity:.9;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+      pointer-events:none;
+    }
+
+    /* Cases / services / process / about / contacts */
+    .grid-3{
+      display:grid; grid-template-columns: repeat(3,1fr); gap:14px;
+    }
+    .grid-2{
+      display:grid; grid-template-columns: repeat(2,1fr); gap:14px;
+    }
+
+    .panel{padding:20px}
+    .panel h3{
+      margin:0 0 10px;
       font-size:18px;
     }
-
-    .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .badge{
-      font-size:13px;
-      padding:7px 10px;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background: rgba(255,255,255,.04);
-      transition: transform .15s ease, border-color .15s ease;
-    }
-    .badge:hover{transform: translateY(-1px); border-color: rgba(106,169,255,.35)}
-
-    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .btn{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
-      border-radius:16px;
-      text-decoration:none;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-      cursor:pointer;
-    }
-    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.18)}
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(106,169,255,.18), rgba(124,92,255,.18));
-      border-color: rgba(106,169,255,.35);
-    }
-    .btn.ghost{
-      background: transparent;
-      border-color: rgba(255,255,255,.14);
+    .panel p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
     }
 
-    .sep{height:1px;background:var(--border);margin:16px 0}
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:14px;
-    }
-    .item{
-      padding:14px;
+    .case-card{
+      padding:18px;
       border-radius:18px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      display:grid; gap:12px;
     }
-    .item:hover{
+    .case-card h3{margin:0; font-size:16px}
+    .case-card .case-sub{color:var(--muted); font-size:13px}
+    .case-card ul{
+      margin:0; padding-left:18px; color:var(--muted); font-size:14px;
+      display:grid; gap:6px;
+    }
+    .case-card li::marker{color:var(--pink)}
+    .case-card .result{
+      border-top:1px solid rgba(255,255,255,.06);
+      padding-top:10px;
+      font-size:13px;
+      color:#eee8ff;
+    }
+
+    .service{
+      padding:16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      display:grid; gap:8px;
+      transition:.18s ease;
+    }
+    .service:hover{
       transform: translateY(-2px);
-      border-color: rgba(106,169,255,.30);
-      background: rgba(255,255,255,.055);
+      border-color: rgba(139,92,255,.22);
+      background: rgba(255,255,255,.025);
     }
-    .k{color:var(--text);font-weight:720}
+    .service .icon{
+      width:34px;height:34px;border-radius:12px;
+      display:grid;place-items:center;
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(135deg, rgba(139,92,255,.15), rgba(255,46,166,.14));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+    .service b{font-size:14px}
+    .service p{margin:0;color:var(--muted);font-size:13px}
 
-    /* ---------- Works cards ---------- */
-    .works-grid{
+    .price-chip{display:inline-flex;align-items:center;gap:.4rem;margin:.45rem 0 .7rem;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:linear-gradient(90deg, rgba(139,92,255,.18), rgba(255,46,166,.14));color:var(--text);font-weight:800;font-size:.95rem}
+    .service h3{margin:0;font-size:15px;line-height:1.35}
+    .service strong{color:var(--text)}
+    .service-meta{margin-top:.55rem;padding-top:.7rem;border-top:1px solid rgba(255,255,255,.07);font-size:13px;color:var(--muted)}
+    .service--wide{grid-column:1/-1}
+    .conditions-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;margin-top:.55rem}
+    .mini-card{border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);padding:12px}
+    .mini-card h4{margin:0 0 .45rem;font-size:13px}
+    .mini-card p,.mini-card li{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+    .mini-card ul{margin:0;padding-left:17px;display:grid;gap:6px}
+
+    .process{
+      padding:20px;
+    }
+    .timeline{
+      display:grid; gap:10px;
+    }
+    .step{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 42px 1fr;
+      gap:12px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.02);
+    }
+    .step-num{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;
+      font-weight:800;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.1);
+      background: linear-gradient(135deg, rgba(139,92,255,.35), rgba(255,46,166,.28));
+      box-shadow: 0 0 25px rgba(139,92,255,.12);
+    }
+    .step b{display:block;margin-top:1px;font-size:14px}
+    .step span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+
+    .about-wrap{
+      padding:20px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
       gap:14px;
-      margin-top:10px;
+      align-items:start;
     }
-    .work{
-      border-radius: 18px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      overflow:hidden;
-      text-decoration:none;
-      display:flex;
-      flex-direction:column;
-      min-height: 220px;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    .about-copy{
+      display:grid; gap:10px;
     }
-    .work:hover{transform: translateY(-3px); border-color: rgba(106,169,255,.32); background: rgba(255,255,255,.055)}
-    .thumb{
-      aspect-ratio: 16/9;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(106,169,255,.25), transparent 55%),
-        radial-gradient(circle at 70% 70%, rgba(124,92,255,.25), transparent 55%),
-        rgba(0,0,0,.25);
-      position:relative;
-      display:flex; align-items:flex-end;
+    .about-copy p{
+      margin:0; color:var(--muted); font-size:14px;
     }
-    .thumb img{width:100%; height:100%; object-fit:cover; opacity:.92}
-    .thumb .play{
-      position:absolute; inset:auto 12px 12px 12px;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
+    .about-copy p strong{color:var(--text)}
+    .about-stats{
+      display:grid; grid-template-columns: repeat(2,1fr); gap:10px;
     }
-    .pill{
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(11,16,32,.45);
-      backdrop-filter: blur(10px);
-      color: rgba(232,236,255,.95);
+    .stat{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      padding:12px;
+      display:grid; gap:4px;
     }
-    .work-body{padding:12px 12px 14px}
-    .work-title{margin:0 0 6px; font-weight:760; letter-spacing:-.2px}
-    .work-desc{margin:0; color:var(--muted); font-size:14px; line-height:1.55}
+    .stat b{font-size:14px}
+    .stat span{font-size:12px;color:var(--muted)}
 
-    /* ---------- Toast + floating buttons ---------- */
-    .toast{
-      position:fixed; left:50%; bottom:20px; transform: translateX(-50%);
-      background: rgba(17,26,51,.88);
-      border:1px solid rgba(255,255,255,.14);
-      border-radius: 16px;
-      padding:10px 12px;
-      box-shadow: var(--shadow);
-      color: var(--text);
-      z-index: 50;
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .2s ease, transform .2s ease;
+    .cta{
+      padding:22px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      align-items:stretch;
     }
-    .toast.show{opacity:1; transform: translateX(-50%) translateY(-6px)}
-    .fab{
-      position:fixed; right:18px; bottom:18px;
-      display:flex; flex-direction:column; gap:10px;
-      z-index: 30;
+    .cta-left{
+      display:flex; flex-direction:column; justify-content:center; gap:12px;
+      padding:6px 4px;
     }
-    .fab button{
-      width:44px; height:44px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(17,26,51,.72);
-      color: var(--text);
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-      cursor:pointer;
-      display:grid; place-items:center;
-      backdrop-filter: blur(10px);
-      transition: transform .15s ease, border-color .15s ease, opacity .15s ease;
+    .cta-left h3{
+      margin:0;
+      font-family:"Unbounded", sans-serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      line-height:1.15;
     }
-    .fab button:hover{transform: translateY(-2px); border-color: rgba(106,169,255,.35)}
-    .fab button[hidden]{opacity:0; pointer-events:none}
+    .cta-left p{
+      margin:0; color:var(--muted); font-size:15px;
+    }
+    .cta-actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .contacts-card{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      padding:14px;
+      display:grid; gap:10px;
+    }
+    .contact-row{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.02);
+      padding:10px;
+    }
+    .contact-meta{
+      display:grid; gap:2px;
+      min-width:0;
+    }
+    .contact-meta b{font-size:13px}
+    .contact-meta span{
+      color:var(--muted); font-size:12px;
+      word-break:break-all;
+    }
 
-    /* ---------- Reveal animation ---------- */
+    footer{
+      padding:24px 0 40px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .footer-line{
+      height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+      margin-bottom:14px;
+    }
+    .footer-row{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+
+    /* reveal */
     .reveal{
-      opacity:0;
-      transform: translateY(10px);
+      opacity:0; transform:translateY(14px);
       transition: opacity .45s ease, transform .45s ease;
     }
     .reveal.show{
-      opacity:1;
-      transform: translateY(0);
+      opacity:1; transform:translateY(0);
     }
 
-    footer{padding:26px 0;color:var(--muted);font-size:13px}
-
-    /* ---------- Accessibility ---------- */
-    :focus-visible{
-      outline: 3px solid rgba(106,169,255,.55);
-      outline-offset: 2px;
-      border-radius: 14px;
-    }
-
-    /* ---------- Responsive ---------- */
-    @media (max-width: 980px){
-      .works-grid{grid-template-columns: repeat(2, 1fr)}
-    }
-    @media (max-width: 860px){
-      .hero{grid-template-columns:1fr}
-      .grid{grid-template-columns:1fr}
-      header{position:static}
-    }
-    @media (max-width: 520px){
-      .wrap{padding:18px}
-      h1{font-size:32px}
-      .works-grid{grid-template-columns: 1fr}
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      html{scroll-behavior:auto}
-      .blob{animation:none}
-      .reveal{transition:none; transform:none}
-      .btn,.item,.work,.menu a,.fab button{transition:none}
-      #fx{display:none}
-    }
-
-    /* Placeholder link hint */
-    a[data-placeholder="1"]{
-      border-bottom: 1px dashed rgba(255,255,255,.35);
-      opacity:.92;
-    }
-    a[data-placeholder="1"]::after{
-      content:"";
-      font-size:12px;
-      color: rgba(170,180,230,.85);
-      margin-left:6px;
-    }
-  </style>
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Тимур",
-  "description": "Я на фрилансе, работаю монтажёром.",
-  "jobTitle": "монтажёр / моушн-дизайнер",
-  "sameAs": [
-    "https://steamcommunity.com/id/id154386008/",
-    "https://t.me/Timurka34",
-    "https://t.me/+zv4JItiEl1ZlYTAy"
-  ],
-  "email": "mailto:Sadreevuz@yandex.ru"
+    /* Responsive */
+    @media (max-width: 1020px){
+      .hero,
+      .telegram-block,
+      .about-wrap,
+      .cta{
+        grid-template-columns:1fr;
+      }
+      .featured-grid{
+        grid-template-columns:1fr;
+      }
+      .grid-3{
+        grid-template-columns:1fr;
+      }
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+      .telegram-right{
+        grid-template-columns:1fr;
+      }
+      .hero-right{
+        min-height:360px;
+      }
+      .hero-character{
+  width:min(82%, 360px);
+  max-height:calc(100% - 4px);
+  right:8px;
+  bottom:-2px;
 }
-  </script>
+      .menu{
+        display:none; /* mobile: можно потом сделать бургер */
+      }
+      .nav{
+        gap:8px;
+      }
+      .nav-actions{
+        display:flex; gap:8px;
+      }
+    }
+
+    @media (max-width: 680px){
+      .hero{
+        padding:18px;
+        min-height:auto;
+      }
+      .works-wrap, .telegram-block, .panel, .process, .about-wrap, .cta{
+        padding:16px;
+      }
+      .mini-card{
+        grid-template-columns: 110px 1fr;
+      }
+      .hero-actions, .cta-actions, .telegram-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .hero-right{
+        min-height:320px;
+      }
+      .hero-character{
+        width:min(74%, 300px);
+        max-height:calc(100% - 2px);
+        right:4px;
+        bottom:-2px;
+      }
+      .btn{
+        width:100%;
+      }
+      .contact-row{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  
+
+/* Card-level refinement patch */
+#works .side-card{align-items:stretch;}
+#works .side-card-thumb img{object-position:center top;}
+.hero-right{overflow:hidden;}
+.hero-character{right:10px;bottom:0;max-width:min(360px,82%);transform:none;}
+@media (max-width: 1024px){.hero-character{max-width:min(320px,76%);}}
+</style>
 </head>
-
 <body>
-  <div class="bg"></div>
-  <canvas id="fx"></canvas>
-  <div class="grid-overlay"></div>
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-
-  <a class="skip" href="#top">К содержимому</a>
-
-<header>
-  <div class="wrap">
-    <nav>
-      <a class="brand" href="#top">
-        <span class="dot" aria-hidden="true"></span>
-        <strong>Тимур</strong>
-      </a>
-      <div class="right">
-        <div class="menu" id="menu" aria-label="Навигация">
-        <a href="#about">Обо мне</a>
-        <a href="#skills">Навыки</a>
-        <a href="#works">Работы</a>
-        <a href="#contacts">Контакты</a>
-      </div>
-        <button class="btn icon" id="themeToggle" type="button" aria-label="Переключить тему" title="Тема">🌓</button>
-      </div>
-    </nav>
-  </div>
-  <div class="progress" aria-hidden="true"><div class="bar" id="progressBar"></div></div>
-
+<div class="bg"></div>
+<div class="noise"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<header class="header">
+<div class="container">
+<nav class="nav">
+<a aria-label="На главную" class="brand" href="#top">
+<div class="brand-badge">H34</div>
+<div class="brand-text">
+<b>Timur / hiki34</b>
+<span>Video Editor • Motion</span>
+</div>
+</a>
+<div aria-label="Навигация по сайту" class="menu">
+<a href="#works">Работы</a>
+<a href="#cases">Кейсы</a>
+<a href="#services">Услуги</a>
+<a href="#about">Обо мне</a>
+<a href="#contacts">Контакты</a>
+</div>
+<div class="nav-actions">
+<a class="btn btn-primary btn-small" href="https://t.me/+zv4JItiEl1ZlYTAy" rel="noreferrer" target="_blank">
+            Telegram Portfolio
+          </a>
+</div>
+</nav>
+</div>
 </header>
-
-<main id="top" class="wrap">
-  <section class="hero">
-    <div class="card soft reveal">
-      <div class="card-header">
-        <div>
-          <h1>Привет! Я <span style="color:var(--accent)">Тимур</span> 👋</h1>
-          <p>Я на фрилансе, работаю монтажёром.</p>
-        </div>
-        <div class="avatar" title="Можно заменить на фото">
-          <span>TS</span>
-        </div>
-      </div>
-
-      <div class="badges" aria-label="Ключевые навыки">
-        <span class="badge">Монтаж</span>
-        <span class="badge">After Effects</span>
-        <span class="badge">Premiere Pro</span>
-        <span class="badge">Motion Design</span>
-        <span class="badge">Reels / Shorts</span>
-      </div>
-
-      <div class="btns">
-        <a class="btn primary" href="https://t.me/+zv4JItiEl1ZlYTAy" target="_blank" rel="noreferrer">🎬 Портфолио</a>
-        <a class="btn" href="#contacts">✉️ Написать</a>
-        <a class="btn ghost" href="[ссылка-на-резюме-если-есть]" data-placeholder="1" target="_blank" rel="noreferrer">📄 Резюме</a>
-      </div>
-
-      <div class="sep"></div>
-      <p class="muted">
-       
-      </p>
-    </div>
-
-    <aside class="card reveal">
-      <h2>Быстрое резюме</h2>
-      <div class="item"><span class="k">Роль:</span> <span class="muted">монтажёр / моушн-дизайнер</span></div>
-      <div class="item" style="margin-top:10px;"><span class="k">Опыт:</span> <span class="muted">3 года</span></div>
-      <div class="item" style="margin-top:10px;"><span class="k">Город/часовой пояс:</span> <span class="muted">Самара</span></div>
-      <div class="item" style="margin-top:10px;"><span class="k">Готовность:</span> <span class="muted">фулл</span></div>
-      <div class="sep"></div>
-      <p class="muted" style="margin:0">
-       
-      </p>
-    </aside>
-  </section>
-
-  <section id="about" class="card reveal">
-    <h2>Обо мне</h2>
-    <p>
-      Играю в видеоигры, смотрю аниме. Веду YouTube‑блог (сейчас реже), но постоянно прокачиваю качество монтажа и стараюсь точно подстраиваться под требования заказчика.
-      Работаю с горизонтальными и вертикальными форматами (YouTube, Shorts/Reels). Хочу развиваться в моушн‑дизайне: делать анимацию логотипов, графику и 3D‑анимации.
-    </p>
-    <p class="muted" style="margin-top:12px">
-      Steam:
-      <a href="https://steamcommunity.com/id/id154386008/" target="_blank" rel="noreferrer">steamcommunity.com/id/id154386008</a>
-    </p>
-    <p>
-      Я работаю стабильно: выполняю ТЗ без «самодеятельности», сдаю в срок и держу одинаковый уровень качества.
-      Если вижу, что можно усилить ролик (темп, музыка, переходы, титры), — предлагаю варианты.
-    </p>
-  </section>
-
-  <section id="skills" class="card reveal" style="margin-top:14px;">
-    <h2>Навыки</h2>
-    <div class="grid">
-      <div class="item">
-        <div class="k">Инструменты</div>
-        <div class="muted">After Effects, Premiere Pro, Photoshop/Illustrator (если используешь)</div>
-      </div>
-      <div class="item">
-        <div class="k">Что умею</div>
-        <div class="muted">Монтаж, цвет/звук (базово), субтитры, графика, моушн, адаптация под площадки</div>
-      </div>
-      <div class="item">
-        <div class="k">Форматы</div>
-        <div class="muted">Reels/Shorts, горизонтальные ролики, рекламные креативы, нарезки</div>
-      </div>
-      <div class="item">
-        <div class="k">Рабочий процесс</div>
-        <div class="muted">ТЗ → черновик → правки → финал, хранение исходников, аккуратная структура проекта</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="works" class="card reveal" style="margin-top:14px;">
-    <h2>Примеры работ</h2>
-    <p class="muted"></p>
-
-    <div class="works-grid" role="list">
-      <!-- YouTube thumbnails:
-           v1R9bXKlRnM, gQzD8myc2SU, L-i1PbvRnpk и 70xOUBQDogo — взяты из ваших ссылок. -->
-      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=v1R9bXKlRnM&t" target="_blank" rel="noreferrer">
-        <div class="thumb">
-          <img alt="Превью: Работа для канала АниЛибрия" src="https://i.ytimg.com/vi/v1R9bXKlRnM/hqdefault.jpg" loading="lazy" />
-          <div class="play">
-            <span class="pill">YouTube</span>
-            <span class="pill">▶</span>
-          </div>
-        </div>
-        <div class="work-body">
-          <div class="work-title">Работа для канала АниЛибрия</div>
-          <p class="work-desc"></p>
-        </div>
-      </a>
-
-      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=gQzD8myc2SU&t" target="_blank" rel="noreferrer">
-        <div class="thumb">
-          <img alt="Превью: Работа для канала CRYPTUS" src="https://i.ytimg.com/vi/gQzD8myc2SU/hqdefault.jpg" loading="lazy" />
-          <div class="play">
-            <span class="pill">YouTube</span>
-            <span class="pill">▶</span>
-          </div>
-        </div>
-        <div class="work-body">
-          <div class="work-title">Работа для канала CRYPTUS</div>
-          <p class="work-desc"></p>
-        </div>
-      </a>
-
-      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=L-i1PbvRnpk&t=39s" target="_blank" rel="noreferrer">
-        <div class="thumb">
-          <img alt="Превью: YouTube работа 3" src="https://i.ytimg.com/vi/L-i1PbvRnpk/hqdefault.jpg" loading="lazy" />
-          <div class="play">
-            <span class="pill">Работа для канала CRYPTUS</span>
-            <span class="pill">▶</span>
-          </div>
-        </div>
-        <div class="work-body">
-          <div class="work-title">Работа для канала CRYPTUS</div>
-          <p class="work-desc"></p>
-        </div>
-      </a>
-
-      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=70xOUBQDogo&t=1s" target="_blank" rel="noreferrer">
-        <div class="thumb">
-          <img alt="Превью: YouTube работа 4" src="https://i.ytimg.com/vi/70xOUBQDogo/hqdefault.jpg" loading="lazy" />
-          <div class="play">
-            <span class="pill">YouTube</span>
-            <span class="pill">▶</span>
-          </div>
-        </div>
-        <div class="work-body">
-          <div class="work-title">YouTube</div>
-          <p class="work-desc"></p>
-        </div>
-      </a>
-
-          <a class="work" role="listitem" href="https://www.youtube.com/watch?v=DKLlu9eYJ_0" target="_blank" rel="noreferrer">
-        <div class="thumb">
-          <img alt="Превью: YouTube работа 5" src="https://i.ytimg.com/vi/DKLlu9eYJ_0/hqdefault.jpg" loading="lazy" />
-          <div class="play">
-            <span class="pill">YouTube</span>
-            <span class="pill">▶</span>
-          </div>
-        </div>
-        <div class="work-body">
-          <div class="work-title">YouTube</div>
-          <p class="work-desc"></p>
-        </div>
-      </a>
-      <a class="work" role="listitem" href="https://www.youtube.com/watch?v=f98Hud6xbaQ" target="_blank" rel="noreferrer">
-        <div class="thumb">
-          <img alt="Превью: YouTube работа 6" src="https://i.ytimg.com/vi/f98Hud6xbaQ/hqdefault.jpg" loading="lazy" />
-          <div class="play">
-            <span class="pill">YouTube</span>
-            <span class="pill">▶</span>
-          </div>
-        </div>
-        <div class="work-body">
-          <div class="work-title">YouTube</div>
-          <p class="work-desc"></p>
-        </div>
-      </a>
+<main id="top">
+<section class="section">
+<div class="container">
+<!-- HERO -->
+<section class="card hero reveal" id="hero">
+<div class="hero-left">
+<div class="eyebrow">
+<span class="eyebrow-dot"></span>
+              Монтаж для YouTube / Shorts / Reels
+            </div>
+<h1>
+              Тимур — видео монтажёр<br/>
+<span style="background:linear-gradient(135deg,var(--violet),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;">
+                &amp; motion editor
+              </span>
+</h1>
+<p class="hero-sub">
+              Делаю динамичный монтаж для YouTube, Shorts/Reels и explainer-роликов.
+              Сильные стороны: темп, читаемые сабы, визуальные вставки, акценты по смыслу и удержание внимания.
+              На сайте — избранные кейсы, в Telegram — больше свежих работ.
+            </p>
+<div class="hero-actions">
+<a class="btn btn-primary" href="https://t.me/+zv4JItiEl1ZlYTAy" rel="noreferrer" target="_blank">
+                🎬 Смотреть Telegram-портфолио
+              </a>
+<a class="btn btn-secondary" href="https://t.me/Timurka34" rel="noreferrer" target="_blank">
+                ✉️ Написать в Telegram
+              </a>
+<a class="btn btn-ghost" href="#cases">
+                📁 Кейсы на сайте
+              </a>
 </div>
-  </section>
-
-  <section id="contacts" class="card reveal" style="margin-top:14px;">
-    <h2>Контакты</h2>
-    <p class="muted"></p>
-    <div class="grid">
-      <div class="item">
-        <div class="k">Telegram</div>
-        <div class="muted" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <a href="https://t.me/Timurka34" target="_blank" rel="noreferrer">@Timurka34</a>
-          <button class="btn" type="button" data-copy="@Timurka34" aria-label="Скопировать Telegram">📋 Скопировать</button>
-        </div>
-      </div>
-      <div class="item">
-        <div class="k">Email</div>
-        <div class="muted" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <a href="mailto:Sadreevuz@yandex.ru">Sadreevuz@yandex.ru</a>
-          <button class="btn" type="button" data-copy="Sadreevuz@yandex.ru" aria-label="Скопировать Email">📋 Скопировать</button>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="k">Портфолио</div>
-        <div class="muted" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <a href="https://t.me/+zv4JItiEl1ZlYTAy" target="_blank" rel="noreferrer">t.me/+zv4JItiEl1ZlYTAy</a>
-          <button class="btn" type="button" data-copy="https://t.me/+zv4JItiEl1ZlYTAy" aria-label="Скопировать ссылку на портфолио">📋 Скопировать</button>
-        </div>
-      </div>
-
+<div aria-label="Ключевые навыки" class="badge-row">
+<div class="badge">Shorts / Reels</div>
+<div class="badge">YouTube long-form</div>
+<div class="badge">Premiere Pro + AE</div>
+<div class="badge">Crypto / Anime / Gaming</div>
+<div class="badge">Motion subtitles</div>
+<div class="badge">Sound accents</div>
 </div>
-  </section>
+<div class="hero-note">
+              Быстрый просмотр свежих работ — в Telegram. На сайте — избранные кейсы и разборы.
+            </div>
+</div>
+<div class="hero-right">
+<div class="floating f1">
+<small>Форматы</small>
+              Shorts / Reels / YouTube
+            </div>
+<div class="floating f2">
+<small>Инструменты</small>
+              Premiere Pro • After Effects
+            </div>
+<div class="floating f3">
+<small>Ниши</small>
+              Crypto / Anime / Gaming
+            </div>
+<img alt="Аниме-персонаж в неоновом стиле" class="hero-character" onerror="this.style.display='none'; document.getElementById('heroFallback').style.display='grid';" src="assets/anime-hero-boy.png"/>
+<div class="hero-character-fallback" id="heroFallback">PNG персонажа не загрузился</div>
+</div>
+<div class="glow-line"></div>
+</section>
+</div>
+</section>
+<!-- WORKS -->
+<section class="section" id="works">
+<div class="container">
+<section class="card works-wrap reveal">
+<div class="section-head">
+<div>
+<h2>Избранные работы</h2>
+<p>Проекты, где лучше всего видно мой подход: темп, акценты, сабы, визуальные вставки и упаковка под формат. Названия кейсов привязаны к реальным ссылкам.</p>
+</div>
+</div>
+<div class="featured-grid">
+<!-- Main featured work -->
+<a aria-label="Открыть кейс CRYPTUS на YouTube" class="featured-card" href="https://www.youtube.com/watch?v=gQzD8myc2SU&amp;t" rel="noreferrer" target="_blank">
+<div class="featured-thumb">
+<img alt="Превью ролика CRYPTUS — 5 событий, которые криптаны ждут в сентябре" loading="lazy" onerror="this.src='https://i.ytimg.com/vi/gQzD8myc2SU/hqdefault.jpg'" src="https://i.ytimg.com/vi/gQzD8myc2SU/maxresdefault.jpg"/>
+</div>
+<div class="featured-overlay"></div>
+<div class="featured-content">
+<div class="row">
+<span class="label">Featured</span>
+<span class="label">Crypto / YouTube</span>
+<span class="label">Explainer</span>
+</div>
+<h3>CRYPTUS — «5 событий, которые криптаны ждут в сентябре»</h3>
+<p>
+                  Смысловой монтаж под тезисы: темп по блокам, визуальные пояснения, акценты и читабельная подача.
+                  Хороший пример моего стиля для crypto/explainer формата.
+                </p>
+</div>
+</a>
+<!-- Side works -->
+<div class="side-grid">
+<a class="mini-card" href="https://www.youtube.com/watch?v=v1R9bXKlRnM&amp;t" rel="noreferrer" target="_blank">
+<div class="mini-thumb">
+<img alt="Работа для канала АниЛибрия" loading="lazy" src="https://i.ytimg.com/vi/v1R9bXKlRnM/hqdefault.jpg"/>
+</div>
+<div class="mini-body">
+<div class="row"><span class="label">YouTube</span><span class="label">Anime</span></div>
+<b>АниЛибрия — anime / news формат</b>
+<p>Горизонтальный ролик в anime-тематике: ритм, читаемая подача, монтаж под инфоповод.</p>
+</div>
+</a>
+<a class="mini-card" href="https://www.youtube.com/watch?v=gQzD8myc2SU&amp;t" rel="noreferrer" target="_blank">
+<div class="mini-thumb">
+<img alt="Работа для канала CRYPTUS" loading="lazy" src="https://i.ytimg.com/vi/gQzD8myc2SU/hqdefault.jpg"/>
+</div>
+<div class="mini-body">
+<div class="row"><span class="label">YouTube</span><span class="label">Crypto</span></div>
+<b>CRYPTUS — YouTube crypto explainer</b>
+<p>Сборка по тезисам, темп по смысловым блокам, визуальные вставки и акцентные моменты.</p>
+</div>
+</a>
+<a class="mini-card" href="https://www.youtube.com/watch?v=70xOUBQDogo&amp;t=1s" rel="noreferrer" target="_blank">
+<div class="mini-thumb">
+<img alt="YouTube работа" loading="lazy" src="https://i.ytimg.com/vi/70xOUBQDogo/hqdefault.jpg"/>
+</div>
+<div class="mini-body">
+<div class="row"><span class="label">Explainer</span><span class="label">Crypto</span></div>
+<b>CRYPTUS — макро / финансы explainer</b>
+<p>Монтаж под голос с выделением ключевых тезисов и визуальной поддержкой финансовой темы.</p>
+</div>
+</a>
+<a class="mini-card" href="https://www.youtube.com/watch?v=L-i1PbvRnpk&amp;t=39s" rel="noreferrer" target="_blank">
+<div class="mini-thumb">
+<img alt="Работа CRYPTUS" loading="lazy" src="https://i.ytimg.com/vi/L-i1PbvRnpk/hqdefault.jpg"/>
+</div>
+<div class="mini-body">
+<div class="row"><span class="label">YouTube</span><span class="label">Long-form</span></div>
+<b>Gaming / long-form комментарий</b>
+<p>Long-form монтаж: чистка, структура, темп и подача без перегруза эффектами.</p>
+</div>
+</a>
+</div>
+</div>
+<div class="more-works">
+<a class="btn btn-secondary" href="https://www.youtube.com/watch?v=DKLlu9eYJ_0" rel="noreferrer" target="_blank">Ещё кейс (YouTube / long-form)</a>
+<a class="btn btn-secondary" href="https://www.youtube.com/watch?v=f98Hud6xbaQ" rel="noreferrer" target="_blank">Доп. пример (YouTube / shorts)</a>
+<a class="btn btn-primary" href="https://t.me/+zv4JItiEl1ZlYTAy" rel="noreferrer" target="_blank">Открыть больше работ в Telegram</a>
+</div>
+<p style="margin:10px 0 0;color:var(--muted);font-size:12px;">
+            Если пришлёшь новые ссылки/подписи — обновлю карточки точечно под конкретный стиль монтажа (crypto, anime, gaming, long-form, shorts).
+          </p>
+</section>
+</div>
+</section>
+<!-- TELEGRAM BLOCK -->
+<section class="section" id="telegram">
+<div class="container">
+<section class="card telegram-block reveal">
+<div class="telegram-left">
+<div class="eyebrow">
+<span class="eyebrow-dot"></span>
+              Главный путь для просмотра работ
+            </div>
+<h3>Telegram-портфолио — быстрый способ посмотреть больше работ</h3>
+<p>
+              Там я публикую свежие проекты, короткие примеры и материалы, которые не всегда попадают на сайт.
+              Если хотите быстро оценить стиль и написать по задаче — удобнее всего через Telegram.
+            </p>
+<div class="bullet-list">
+<div class="bullet"><i>✓</i> Больше свежих работ, чем на сайте</div>
+<div class="bullet"><i>✓</i> Удобно смотреть с телефона</div>
+<div class="bullet"><i>✓</i> Можно сразу написать по проекту</div>
+</div>
+<div class="telegram-actions">
+<a class="btn btn-primary" href="https://t.me/+zv4JItiEl1ZlYTAy" rel="noreferrer" target="_blank">Открыть Telegram-портфолио</a>
+<a class="btn btn-secondary" href="https://t.me/Timurka34" rel="noreferrer" target="_blank">Написать мне</a>
+</div>
+</div>
+<div class="telegram-right">
+<div class="phone-mock">
+<div class="phone-top">
+<span>Telegram • Portfolio</span>
+<span>invite-link portfolio</span>
+</div>
+<div class="phone-list">
+<div class="phone-item">
+<b>Shorts / Crypto explainer</b>
+<span>Динамичный монтаж • сабы • вставки • саунд-акценты</span>
+</div>
+<div class="phone-item">
+<b>YouTube long-form</b>
+<span>Структура • ритм • визуальные акценты • удержание темпа</span>
+</div>
+<div class="phone-item">
+<b>Anime / Gaming edit</b>
+<span>Атмосфера • музыкальные акценты • стилизация • читабельность</span>
+</div>
+<div class="phone-item">
+<b>Новые примеры</b>
+<span>Шортсы, тесты и motion-сцены по мере готовности</span>
+</div>
+</div>
+<!-- Опциональный декоративный PNG -->
+<img alt="" class="mini-char" onerror="this.style.display='none'" src="assets/anime-mini-boy.png"/>
+</div>
+<div class="qr-box" style="display:none; color:var(--muted); font-size:13px;">QR не загрузился</div>
+</div>
+<div class="glow-line"></div>
+</section>
+</div>
+</section>
+<!-- CASES -->
+<section class="section" id="cases">
+<div class="container">
+<section class="card panel reveal">
+<div class="section-head">
+<div>
+<h2>Мини-кейсы</h2>
+<p>Короткие разборы, чтобы было понятно не только “что сделано”, но и как я подхожу к задаче.</p>
+</div>
+</div>
+<div class="grid-3">
+<article class="case-card">
+<div>
+<h3>Crypto / Crime Shorts</h3>
+<div class="case-sub">Вертикальный explainer с ироничной подачей</div>
+</div>
+<div>
+<b style="font-size:13px;">Задача</b>
+<p style="margin:4px 0 0;color:var(--muted);font-size:13px;">
+                  Сделать ролик динамичным и понятным с первых секунд, чтобы удерживать внимание и не потерять сюжет.
+                </p>
+</div>
+<div>
+<b style="font-size:13px;">Что сделал</b>
+<ul>
+<li>Собрал монтаж под голос/текст</li>
+<li>Выстроил ритм и драматургию</li>
+<li>Оформил сабы и смысловые акценты</li>
+<li>Добавил вставки и саунд-акценты</li>
+</ul>
+</div>
+<div class="result">
+                Итог: быстрый, читаемый и визуально насыщенный Shorts-ролик с понятным развитием сюжета.
+              </div>
+</article>
+<article class="case-card">
+<div>
+<h3>Gaming / Long-form комментарий</h3>
+<div class="case-sub">Горизонтальный ролик: чистка структуры и темпа без перегруза</div>
+</div>
+<div>
+<b style="font-size:13px;">Задача</b>
+<p style="margin:4px 0 0;color:var(--muted);font-size:13px;">Собрать чистую подачу комментария: убрать лишнее, выровнять ритм и удержать внимание по смысловым блокам.</p>
+</div>
+<div>
+<b style="font-size:13px;">Что сделал</b>
+<ul><li>Чистка и сборка структуры</li><li>Ритм по смысловым блокам</li><li>Точечные визуальные вставки</li><li>Подготовка под публикацию</li></ul>
+</div>
+<div class="result">Итог: ролик читается легче, держит темп и не перегружается эффектами там, где важнее мысль.</div>
+</article>
+<article class="case-card">
+<div>
+<h3>Motion / AE scene (stylized)</h3>
+<div class="case-sub">Стилизованная сцена: вектор + 2.5D пространство + атмосфера</div>
+</div>
+<div>
+<b style="font-size:13px;">Задача</b>
+<p style="margin:4px 0 0;color:var(--muted);font-size:13px;">Собрать атмосферную сцену для портфолио: сохранить стиль, добавить глубину кадра и живость движения.</p>
+</div>
+<div>
+<b style="font-size:13px;">Что сделал</b>
+<ul><li>Векторные элементы + 3D/2.5D пространство</li><li>Анимация листьев, огня и растений</li><li>Движение камеры и параллакс</li><li>Финальная сборка под портфолио</li></ul>
+</div>
+<div class="result">Итог: стилизованный motion-shot с глубиной, мягким движением камеры и атмосферными FX для портфолио.</div>
+</article>
+</div>
+</section>
+</div>
+</section>
+<!-- SERVICES -->
+<section class="section" id="services">
+<div class="container">
+<section class="card panel reveal">
+<div class="section-head">
+<div>
+<h2>Услуги и цены</h2>
+<p>Ориентиры по стоимости под разные форматы. Финальная цена считается после просмотра задачи, исходников и референсов.</p>
+</div>
+</div>
+<div class="grid-3">
+<article class="service">
+<span class="dot"></span>
+<h3>Вертикальные ролики (Reels / Shorts / TikTok)</h3>
+<div class="price-chip">от 2 000 ₽</div>
+<p>Монтаж под формат соцсетей: субтитры, музыка, динамика, вставки, акценты и базовая графика.</p>
+<div class="service-meta"><strong>Сложные ролики</strong> (плотная графика / 3D / много анимации) — <strong>от 3 000–5 000 ₽</strong>.</div>
+</article>
 
-  <footer>
-    <div class="sep"></div>
-    © <span id="y"></span> Тимур
-  </footer>
+<article class="service">
+<span class="dot"></span>
+<h3>Горизонтальные ролики</h3>
+<div class="price-chip">от 8 000 ₽ за ролик</div>
+<p>Монтаж с вырезкой дублей, вставками, выделением важных моментов, музыкой, переходами, графикой/мемами и удержанием темпа.</p>
+<div class="service-meta">Ориентир за <strong>10–15 минут</strong> готового видео: <strong>8 000–15 000 ₽</strong> (в зависимости от сложности).</div>
+</article>
+
+<article class="service">
+<span class="dot"></span>
+<h3>Подкаст / интервью (со вставками)</h3>
+<div class="price-chip">от 12 000 ₽</div>
+<p>Монтаж длинного выпуска: чистка пауз/заминок, вставки, базовое оформление, динамика и работа с ритмом.</p>
+<div class="service-meta">Подкаст <strong>45–90 минут</strong> — обычно <strong>12 000–25 000 ₽</strong> (зависит от числа камер, графики, объёма правок и исходников).</div>
+</article>
+
+<article class="service service--wide">
+<span class="dot"></span>
+<h3>Условия</h3>
+<p>Итоговая стоимость зависит от задачи, объёма исходников, сроков и количества правок. Можно обсудить цену в ЛС — под ваш формат, объём и уровень сложности.</p>
+<div class="conditions-grid">
+<div class="mini-card">
+<h4>Что влияет на стоимость</h4>
+<ul>
+<li>Сложность монтажа и плотность графики</li>
+<li>Объём исходников и длительность финального ролика</li>
+<li>Сроки / срочность</li>
+<li>Количество правок</li>
+</ul>
+</div>
+<div class="mini-card">
+<h4>Дополнительно</h4>
+<p>При заказе пакетом (оптом) — скидка. Удобнее всего считать стоимость после короткого ТЗ, ссылки на референс и примера желаемого стиля.</p>
+</div>
+</div>
+</article>
+</div>
+</section>
+</div>
+</section>
+<!-- PROCESS + ABOUT -->
+<section class="section">
+<div class="container">
+<div class="grid-2">
+<section class="card process reveal">
+<div class="section-head" style="margin-bottom:10px;">
+<div>
+<h2 style="font-size:24px;">Как работаю</h2>
+<p>Понятный процесс без лишней “самодеятельности” — с фокусом на задачу и сроки.</p>
+</div>
+</div>
+<div class="timeline">
+<div class="step">
+<div class="step-num">1</div>
+<div><b>Обсуждение задачи</b><span>Формат, стиль, дедлайн, референсы, объём исходников.</span></div>
+</div>
+<div class="step">
+<div class="step-num">2</div>
+<div><b>Черновой монтаж</b><span>Сборка структуры и базового ритма ролика.</span></div>
+</div>
+<div class="step">
+<div class="step-num">3</div>
+<div><b>Доработка</b><span>Сабы, вставки, акценты, саунд-дизайн, визуальная поддержка.</span></div>
+</div>
+<div class="step">
+<div class="step-num">4</div>
+<div><b>Правки</b><span>Правки по списку и финальная доводка.</span></div>
+</div>
+<div class="step">
+<div class="step-num">5</div>
+<div><b>Финал / экспорт</b><span>Подготовка версии под нужную площадку и формат.</span></div>
+</div>
+</div>
+</section>
+<section class="card about-wrap reveal" id="about">
+<div class="about-copy">
+<div class="section-head" style="margin-bottom:4px;">
+<div>
+<h2 style="font-size:24px;">Обо мне</h2>
+<p>Кто я, с какими форматами работаю и какой подход использую в монтаже.</p>
+</div>
+</div>
+<p><strong>Привет! Я Тимур (hiki34)</strong> — видео-монтажёр и motion editor. Работаю с YouTube, Shorts / Reels и explainer-форматами: выстраиваю темп, делаю читаемую подачу и усиливаю ролик визуальными вставками/акцентами.</p>
+<p>Основные инструменты — <strong>Premiere Pro</strong> и <strong>After Effects</strong>. По текущему бэкграунду: <strong>Premiere Pro — около 2 лет</strong>, <strong>After Effects — около 1 года</strong>. Ближе всего мне стилистика <strong>anime / gaming / digital / crypto</strong>.</p>
+<p>В работе ценю понятное ТЗ, сроки и аккуратную реализацию. Если ролик можно усилить (темп, сабы, музыка, вставки, переходы, титры) — предлагаю варианты, но держу фокус на задаче проекта. Готов к проектной работе и фулл-тайм формату.</p>
+</div>
+<div class="about-stats">
+<div class="stat">
+<b>Форматы</b>
+<span>Shorts / Reels / YouTube / explainer / интервью</span>
+</div>
+<div class="stat">
+<b>Софт</b>
+<span>Premiere Pro (~2 года) • After Effects (~1 год)</span>
+</div>
+<div class="stat">
+<b>Подход</b>
+<span>Темп • Читаемость • Смысловые акценты</span>
+</div>
+<div class="stat">
+<b>Формат работы</b>
+<span>Проектно / фулл-тайм • связь через Telegram</span>
+</div>
+<div class="stat" style="grid-column:1/-1;">
+<b>Акцент портфолио</b>
+<span>Сайт = избранные кейсы / Telegram = больше свежих работ и быстрый контакт</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+</section>
+<!-- CONTACTS / CTA -->
+<section class="section" id="contacts">
+<div class="container">
+<section class="card cta reveal">
+<div class="cta-left">
+<div class="eyebrow">
+<span class="eyebrow-dot"></span>
+              Готов обсудить проект
+            </div>
+<h3>Обсудим задачу по монтажу?</h3>
+<p>
+              Можешь сразу прислать ссылку на референс, примерную длительность ролика и желаемый дедлайн.
+              Обычно быстрее всего отвечаю в Telegram.
+            </p>
+<div class="cta-actions">
+<a class="btn btn-primary" href="https://t.me/Timurka34" rel="noreferrer" target="_blank">✉️ Написать в Telegram</a>
+<a class="btn btn-secondary" href="https://t.me/+zv4JItiEl1ZlYTAy" rel="noreferrer" target="_blank">🎬 Telegram-портфолио</a>
+</div>
+</div>
+<div class="contacts-card">
+<div class="contact-row">
+<div class="contact-meta">
+<b>Telegram</b>
+<span>@Timurka34</span>
+</div>
+<a class="btn btn-secondary btn-small" href="https://t.me/Timurka34" rel="noreferrer" target="_blank">Открыть</a>
+</div>
+<div class="contact-row">
+<div class="contact-meta">
+<b>Email</b>
+<span>Sadreevuz@yandex.ru</span>
+</div>
+<a class="btn btn-secondary btn-small" href="mailto:Sadreevuz@yandex.ru">Написать</a>
+</div>
+<div class="contact-row">
+<div class="contact-meta">
+<b>Telegram-портфолио</b>
+<span>t.me/+zv4JItiEl1ZlYTAy</span>
+</div>
+<a class="btn btn-primary btn-small" href="https://t.me/+zv4JItiEl1ZlYTAy" rel="noreferrer" target="_blank">Смотреть</a>
+</div>
+</div>
+<div class="glow-line"></div>
+</section>
+</div>
+</section>
+<footer>
+<div class="container">
+<div class="footer-line"></div>
+<div class="footer-row">
+<div>© <span id="year"></span> Тимур / hiki34</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<a class="btn btn-ghost btn-small" href="#works">Работы</a>
+<a class="btn btn-ghost btn-small" href="#cases">Кейсы</a>
+<a class="btn btn-ghost btn-small" href="https://t.me/+zv4JItiEl1ZlYTAy" rel="noreferrer" target="_blank">Telegram Portfolio</a>
+</div>
+</div>
+</div>
+</footer>
 </main>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<div class="fab" aria-label="Быстрые действия">
-  <button id="toTop" title="Наверх" hidden aria-label="Наверх">↑</button>
-</div>
-
 <script>
-  // Year
-  document.getElementById("y").textContent = new Date().getFullYear();
+    // year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-// Theme (dark/light)
-const THEME_KEY = "theme";
-const themeBtn = document.getElementById("themeToggle");
-function applyTheme(mode){
-  if(mode === "light"){
-    document.documentElement.setAttribute("data-theme","light");
-  }else{
-    document.documentElement.removeAttribute("data-theme");
-  }
-  if(themeBtn){
-    themeBtn.textContent = mode === "light" ? "🌙" : "☀️";
-    themeBtn.setAttribute("aria-label", mode === "light" ? "Включить тёмную тему" : "Включить светлую тему");
-    themeBtn.title = mode === "light" ? "Тёмная тема" : "Светлая тема";
-  }
-  const metaTheme = document.querySelector('meta[name="theme-color"]');
-  if(metaTheme){
-    metaTheme.setAttribute("content", mode === "light" ? "#f7f9ff" : "#0b1020");
-  }
-}
-const savedTheme = localStorage.getItem(THEME_KEY);
-if(savedTheme === "light" || savedTheme === "dark"){
-  applyTheme(savedTheme);
-}else{
-  // Keep default dark, but respect system preference if it is light
-  const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
-  applyTheme(prefersLight ? "light" : "dark");
-}
-if(themeBtn){
-  themeBtn.addEventListener("click", () => {
-    const isLight = document.documentElement.getAttribute("data-theme") === "light";
-    const next = isLight ? "dark" : "light";
-    localStorage.setItem(THEME_KEY, next);
-    applyTheme(next);
-  });
-}
-
-
-  // Toast helper
-  const toast = document.getElementById("toast");
-  let toastTimer = null;
-  function showToast(text){
-    toast.textContent = text;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>toast.classList.remove("show"), 1400);
-  }
-
-  // Copy buttons
-  document.querySelectorAll("[data-copy]").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const value = btn.getAttribute("data-copy");
-      try{
-        await navigator.clipboard.writeText(value);
-        showToast("Скопировано: " + value);
-      }catch(e){
-        // Fallback
-        const ta = document.createElement("textarea");
-        ta.value = value;
-        ta.style.position = "fixed";
-        ta.style.left = "-9999px";
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        showToast("Скопировано: " + value);
-      }
-    });
-  });
-
-  // Scrollspy
-  const menuLinks = Array.from(document.querySelectorAll("#menu a"));
-  const sections = menuLinks
-    .map(a => document.querySelector(a.getAttribute("href")))
-    .filter(Boolean);
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const id = "#" + entry.target.id;
-      const link = menuLinks.find(a => a.getAttribute("href") === id);
-      if (!link) return;
-      if (entry.isIntersecting){
-        menuLinks.forEach(a => a.classList.remove("active"));
-        link.classList.add("active");
-      }
-    });
-  }, { root: null, threshold: 0.35 });
-
-  sections.forEach(s => io.observe(s));
-
-  // Reveal-on-scroll
-  const revealEls = document.querySelectorAll(".reveal");
-  const ro = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting){
-        e.target.classList.add("show");
-        ro.unobserve(e.target);
-      }
-    });
-  }, {threshold: 0.12});
-  revealEls.forEach(el => ro.observe(el));
-
-  // Back-to-top button
-  const toTop = document.getElementById("toTop");
-  window.addEventListener("scroll", () => {
-    const show = window.scrollY > 700;
-    toTop.hidden = !show;
-  }, {passive:true});
-  toTop.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
-
-
-  // Header scroll progress
-  const progressBar = document.getElementById("progressBar");
-  function updateProgress(){
-    if(!progressBar) return;
-    const doc = document.documentElement;
-    const scrollTop = doc.scrollTop || document.body.scrollTop;
-    const height = doc.scrollHeight - doc.clientHeight;
-    const p = height > 0 ? (scrollTop / height) : 0;
-    const clamped = Math.min(Math.max(p, 0), 1);
-    progressBar.style.transform = "scaleX(" + clamped + ")";
-  }
-  window.addEventListener("scroll", updateProgress, {passive:true});
-  updateProgress();
-
-  // Particles (lightweight)
-  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-
-  // Hover spotlight (subtle)
-  if(!prefersReduced){
-    const fxEls = document.querySelectorAll(".card, .work");
-    fxEls.forEach(el => {
-      el.classList.add("fx");
-      el.addEventListener("mousemove", (e) => {
-        const r = el.getBoundingClientRect();
-        const x = ((e.clientX - r.left) / r.width) * 100;
-        const y = ((e.clientY - r.top) / r.height) * 100;
-        el.style.setProperty("--mx", x.toFixed(2) + "%");
-        el.style.setProperty("--my", y.toFixed(2) + "%");
-      }, {passive:true});
-      el.addEventListener("mouseleave", () => {
-        el.style.removeProperty("--mx");
-        el.style.removeProperty("--my");
-      }, {passive:true});
-    });
-  }
-
-  const canvas = document.getElementById("fx");
-  const ctx = canvas.getContext("2d", { alpha: true });
-
-  let W=0,H=0, dpr=1;
-  const particles = [];
-  const MAX = 72; // keep it light
-
-  function resize(){
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.width = Math.floor(window.innerWidth * dpr);
-    H = canvas.height = Math.floor(window.innerHeight * dpr);
-    canvas.style.width = window.innerWidth + "px";
-    canvas.style.height = window.innerHeight + "px";
-    init();
-  }
-  window.addEventListener("resize", resize, {passive:true});
-  resize();
-
-  function rand(min,max){ return Math.random()*(max-min)+min; }
-
-  function init(){
-    particles.length = 0;
-    for(let i=0;i<MAX;i++){
-      particles.push({
-        x: rand(0,W),
-        y: rand(0,H),
-        r: rand(0.9, 2.2) * dpr,
-        vx: rand(-0.18, 0.18) * dpr,
-        vy: rand(-0.12, 0.22) * dpr,
-        a: rand(0.12, 0.26)
-      });
-    }
-  }
-
-  function step(){
-    ctx.clearRect(0,0,W,H);
-
-    // dots
-    for(const p of particles){
-      p.x += p.vx;
-      p.y += p.vy;
-
-      if(p.x < -20) p.x = W + 20;
-      if(p.x > W + 20) p.x = -20;
-      if(p.y < -20) p.y = H + 20;
-      if(p.y > H + 20) p.y = -20;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = "rgba(232,236,255," + p.a + ")";
-      ctx.fill();
-    }
-
-    // connections (very subtle)
-    for(let i=0;i<particles.length;i++){
-      for(let j=i+1;j<particles.length;j++){
-        const a = particles[i], b = particles[j];
-        const dx = a.x-b.x, dy = a.y-b.y;
-        const dist = Math.hypot(dx,dy);
-        const maxDist = 160 * dpr;
-        if(dist < maxDist){
-          const alpha = (1 - dist/maxDist) * 0.08;
-          ctx.strokeStyle = "rgba(106,169,255," + alpha + ")";
-          ctx.lineWidth = 1 * dpr;
-          ctx.beginPath();
-          ctx.moveTo(a.x,a.y);
-          ctx.lineTo(b.x,b.y);
-          ctx.stroke();
+    // reveal on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add("show");
+          io.unobserve(e.target);
         }
-      }
-    }
+      });
+    }, {threshold:.12});
+    document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
 
-    requestAnimationFrame(step);
-  }
+    // mouse glow position for cards
+    document.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("mousemove", (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        card.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+    });
 
-  if(!prefersReduced){
-    requestAnimationFrame(step);
-  }else{
-    canvas.style.display = "none";
-  }
-</script>
+    // smooth internal nav offset is handled by CSS sticky + scroll-margin
+  </script>
 </body>
 </html>
